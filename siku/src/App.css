@@ -28,6 +28,39 @@
   color: #61dafb;
 }
 
+.encabezado {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  background-color: #f8f9fa;
+}
+
+.barra-lateral {
+  width: 200px;
+  background-color: #343a40;
+  color: white;
+  padding: 1rem;
+}
+
+.producto-card {
+  border: 1px solid #ddd;
+  padding: 1rem;
+  margin: 1rem;
+  text-align: center;
+  cursor: pointer;
+}
+
+.resumen-orden {
+  border: 1px solid #ddd;
+  padding: 1rem;
+  margin: 1rem;
+}
+
+.pagina-menu {
+  display: flex;
+  justify-content: space-between;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

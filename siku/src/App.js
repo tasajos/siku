@@ -1,20 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
 import React from 'react';
-import Header from './Components/Inicio/Header';
-import Menu from './Components/Inicio/Menu';
-import Pedido from './Components/Inicio/Pedido';
-import Footer from './Components/Inicio/Footer';
-
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import PaginaMenu from './Components/Paginas/PaginaMenu';
+import Encabezado from './Components/Layout/Encabezado';
+import BarraLateral from './Components/Layout/BarraLateral';
+import './App.css';
 
 function App() {
   return (
-    <div className="App">
-      <Header />
-      <Menu />
-      <Pedido />
-      <Footer />
-    </div>
+    <Router>
+      <div className="App">
+        <Encabezado />
+        <div className="contenido">
+          <BarraLateral />
+          <Routes>
+            <Route path="/menu" element={<PaginaMenu />} />
+            {/* Otras rutas aquí */}
+          </Routes>
+        </div>
+      </div>
+    </Router>
   );
 }
 
