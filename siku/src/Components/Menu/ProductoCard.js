@@ -8,7 +8,7 @@ const ProductoCard = ({ producto, agregarAlPedido }) => {
       <div className="producto-info">
         <h3 className="producto-nombre">{producto.nombre}</h3>
         <p className="producto-categoria">Categoría: {producto.categoria}</p>
-        <p className="producto-precio">Precio: ${producto.precio}</p>
+        <p className="producto-precio">Precio: Bs {producto.precio}</p>
       </div>
     </div>
   );
