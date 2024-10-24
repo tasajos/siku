@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { database } from '../../firebase';
 import { ref, onValue } from 'firebase/database';
 import ProductoCard from './ProductoCard';
-import './Menu.css'; // Asegúrate de tener los estilos CSS
+import './Menu.css';
 
-const Menu = ({ agregarAlPedido }) => {
+const Menu = ({ agregarAlPedido, filtro }) => {
   const [productos, setProductos] = useState([]);
 
   useEffect(() => {
@@ -16,9 +16,14 @@ const Menu = ({ agregarAlPedido }) => {
     });
   }, []);
 
+  // Filtrar productos según el valor del filtro
+  const productosFiltrados = productos.filter((producto) =>
+    producto.nombre.toLowerCase().includes(filtro.toLowerCase())
+  );
+
   return (
     <div className="menu">
-      {productos.map((producto, index) => (
+      {productosFiltrados.map((producto, index) => (
         <ProductoCard key={index} producto={producto} agregarAlPedido={agregarAlPedido} />
       ))}
     </div>

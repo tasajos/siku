@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Menu from '../Menu/Menu';
 import ResumenOrden from '../Orden/ResumenOrden';
 
-const PaginaMenu = () => {
+const PaginaMenu = ({ filtro }) => { // Recibe el filtro como prop desde App.js
   const [pedido, setPedido] = useState([]);
 
   const agregarAlPedido = (producto) => {
@@ -15,7 +15,8 @@ const PaginaMenu = () => {
 
   return (
     <div className="pagina-menu">
-      <Menu agregarAlPedido={agregarAlPedido} />
+      {/* El filtro se pasa al menú */}
+      <Menu agregarAlPedido={agregarAlPedido} filtro={filtro} />
       <ResumenOrden pedido={pedido} cancelarPedido={cancelarPedido} />
     </div>
   );

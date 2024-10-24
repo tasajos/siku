@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import PaginaMenu from './Components/Paginas/PaginaMenu';
 import Encabezado from './Components/Layout/Encabezado';
@@ -6,14 +6,23 @@ import BarraLateral from './Components/Layout/BarraLateral';
 import './App.css';
 
 function App() {
+  const [filtro, setFiltro] = useState(''); // Estado del filtro global
+
+  // Función para manejar la búsqueda y actualizar el estado del filtro
+  const manejarBusqueda = (busqueda) => {
+    setFiltro(busqueda);
+  };
+
   return (
     <Router>
       <div className="App">
-        <Encabezado />
+        {/* Encabezado maneja la búsqueda y actualiza el estado global */}
+        <Encabezado onSearch={manejarBusqueda} />
         <div className="contenido">
           <BarraLateral />
           <Routes>
-            <Route path="/menu" element={<PaginaMenu />} />
+            {/* Pasamos el filtro a PaginaMenu */}
+            <Route path="/menu" element={<PaginaMenu filtro={filtro} />} />
             {/* Otras rutas aquí */}
           </Routes>
         </div>
