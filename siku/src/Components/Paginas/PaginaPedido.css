@@ -40,7 +40,7 @@
   .botones-pedido {
     display: flex;
     justify-content: space-around;
-    gap: 10px; /* Separación entre botones */
+    gap: 5px; /* Separación entre botones */
     margin-top: 20px;
   }
   
