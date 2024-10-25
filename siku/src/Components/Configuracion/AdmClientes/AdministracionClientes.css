@@ -1,0 +1,58 @@
+.admin-clientes-container {
+    text-align: center;
+    padding: 2rem;
+  }
+  
+  h2 {
+    margin-bottom: 2rem;
+    color: #333;
+  }
+  
+  .admin-clientes-cards {
+    display: flex;
+    justify-content: space-around;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+  
+  .admin-card {
+    width: 250px;
+    padding: 1.5rem;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+  }
+  
+  .admin-icon {
+    font-size: 2.5rem;
+    color: #007bff;
+    margin-bottom: 0.5rem;
+  }
+  
+  .admin-card h3 {
+    margin-bottom: 1rem;
+    color: #333;
+  }
+  
+  .admin-card p {
+    color: #555;
+    margin-bottom: 1rem;
+  }
+  
+  .admin-button {
+    padding: 0.5rem 1rem;
+    border: none;
+    background-color: #007bff;
+    color: #fff;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .admin-button:hover {
+    background-color: #0056b3;
+  }
+  

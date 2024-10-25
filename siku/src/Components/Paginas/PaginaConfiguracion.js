@@ -25,7 +25,7 @@ const Configuracion = () => {
           <h3>Administración de Caja</h3>
     
           <p>Configuración de caja, historial de movimientos y cierres.</p>
-          <Link to="/admin-caja">
+          <Link to="/adm-caja">
             <button className="config-button">Acceder</button>
           </Link>
         </div>
@@ -34,7 +34,7 @@ const Configuracion = () => {
           <br></br>
           <h3>Administración de Clientes</h3>
           <p>Gestión de clientes, registro y seguimiento de datos.</p>
-          <Link to="/admin-clientes">
+          <Link to="/adm-clientes">
             <button className="config-button">Acceder</button>
           </Link>
         </div>
