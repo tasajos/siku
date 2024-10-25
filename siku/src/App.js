@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import PaginaMenu from './Components/Paginas/PaginaMenu';
 import PaginaPedido from './Components/Paginas/PaginaPedidos';
+import Pagos from './Components/Paginas/PaginaPago'; // Nuevo componente de pagos
 import Encabezado from './Components/Layout/Encabezado';
 import BarraLateral from './Components/Layout/BarraLateral';
 import './App.css';
@@ -25,6 +26,7 @@ function App() {
             {/* Pasamos el filtro a PaginaMenu */}
             <Route path="/menu" element={<PaginaMenu filtro={filtro} />} />
             <Route path="/pedidos" element={<PaginaPedido />} />
+            <Route path="/pagos" element={<Pagos />} />
             {/* Otras rutas aquí */}
           </Routes>
         </div>
