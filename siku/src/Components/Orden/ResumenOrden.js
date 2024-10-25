@@ -1,18 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons'; // Importa el ícono de papelera
 import { Button, Modal, Form } from 'react-bootstrap'; // Importar los componentes de Bootstrap
+import { database } from '../../firebase'; // Asegúrate de importar Firebase
+import { ref, set, push, onValue } from 'firebase/database'; // Firebase methods
 
 const ResumenOrden = ({ pedido, cancelarPedido }) => {
   const [showModal, setShowModal] = useState(false); // Estado para controlar la visibilidad del modal
   const [billete, setBillete] = useState(0); // Estado para almacenar el billete ingresado
   const [cambio, setCambio] = useState(0); // Estado para almacenar el cambio
+  const [numPedido, setNumPedido] = useState(0); // Estado para el número de pedido
 
   const total = pedido.reduce((acc, item) => acc + item.precio, 0);
   const totalConServicio = (total * 1.1).toFixed(2); // Total con 10% de servicio
 
   // Funciones para abrir y cerrar el modal
-  const handleShow = () => setShowModal(true);
+  const handleShow = () => {
+    obtenerUltimoNumeroPedido(); // Obtener el número de pedido antes de abrir el modal
+    setShowModal(true);
+  };
   const handleClose = () => {
     setShowModal(false);
     setBillete(0); // Reiniciar el campo de billete
@@ -27,6 +33,43 @@ const ResumenOrden = ({ pedido, cancelarPedido }) => {
     // Calcular el cambio
     const calculoCambio = valorIngresado - totalConServicio;
     setCambio(calculoCambio > 0 ? calculoCambio.toFixed(2) : 0);
+  };
+
+  // Función para registrar el pedido en Firebase
+  const registrarPedido = () => {
+    const pedidoRef = ref(database, `pedidos/${numPedido}`);
+
+    const nuevoPedido = {
+      numeroPedido: numPedido,
+      estado: "Pendiente",
+      total: totalConServicio,
+      menu: pedido,
+      cambio: cambio,
+    };
+
+    set(pedidoRef, nuevoPedido)
+      .then(() => {
+        alert('Pedido registrado con éxito');
+        handleClose();
+      })
+      .catch((error) => {
+        console.error('Error al registrar el pedido: ', error);
+      });
+  };
+
+  // Obtener el último número de pedido y autoincrementar
+  const obtenerUltimoNumeroPedido = () => {
+    const pedidosRef = ref(database, 'pedidos');
+    onValue(pedidosRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        const keys = Object.keys(data);
+        const ultimoNumero = Math.max(...keys.map(key => parseInt(key))); // Obtiene el último número de pedido
+        setNumPedido(ultimoNumero + 1); // Autoincrementa el número de pedido
+      } else {
+        setNumPedido(1); // Si no hay pedidos previos, empieza desde 1
+      }
+    });
   };
 
   return (
@@ -71,7 +114,7 @@ const ResumenOrden = ({ pedido, cancelarPedido }) => {
 
           {/* Campo para ingresar el billete */}
           <Form.Group>
-            <Form.Label>Billete recibido (Bs):</Form.Label>
+            <Form.Label>Monto a Pagar (Bs):</Form.Label>
             <Form.Control
               type="number"
               min="0"
@@ -91,7 +134,7 @@ const ResumenOrden = ({ pedido, cancelarPedido }) => {
           {/* Deshabilitar el botón si el billete es menor que el total */}
           <Button 
             variant="primary" 
-            onClick={() => alert('Pago realizado!')} 
+            onClick={registrarPedido} 
             disabled={billete < totalConServicio}
           >
             Confirmar Pago
