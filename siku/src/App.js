@@ -22,6 +22,8 @@ import Admclientes from './Components/Configuracion/AdmClientes/AdministracionCl
 import Admccajas from './Components/Configuracion/AdmCaja/AdministracionCaja';
 import Cajas from './Components/Configuracion/AdmCaja/Caja';
 import CierreCajas from './Components/Configuracion/AdmCaja/CierreCaja';
+import ListaCierreCajas from './Components/Configuracion/AdmCaja/ListaCierresCaja';
+
 import './App.css';
 
 function App() {
@@ -75,6 +77,7 @@ function App() {
               <Route path="/adm-clientes" element={<Admclientes />} />
               <Route path="/cajas" element={<Cajas />} />
               <Route path="/cierrecajas" element={<CierreCajas />} />
+              <Route path="/listacierrecajas" element={<ListaCierreCajas />} />
               <Route path="/adm-caja" element={<Admccajas />} />
               <Route path="/login" element={<Navigate to="/" />} /> {/* Redirigir si ya está autenticado */}
               <Route path="*" element={<Navigate to="/menu" />} /> {/* Redirigir a menú por defecto */}

@@ -13,7 +13,7 @@ const AdministracionCaja = () => {
           <FontAwesomeIcon icon={faListAlt} className="admin-icon" />
           <h3>Lista de Cierres</h3>
           <p>Consulta los cierres de caja anteriores y sus detalles.</p>
-          <Link to="/lista-cierres">
+          <Link to="/listacierrecajas">
             <button className="admin-button">Ver Lista</button>
           </Link>
         </div>

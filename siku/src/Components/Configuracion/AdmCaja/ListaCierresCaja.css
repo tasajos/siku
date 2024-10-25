@@ -1,0 +1,62 @@
+.lista-cierres-container {
+    padding: 20px;
+    text-align: center;
+  }
+  
+  h2 {
+    margin-bottom: 20px;
+  }
+  
+  .filtro-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .filtro-input {
+    width: 60%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .exportar-button {
+    padding: 8px 16px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .exportar-button:hover {
+    background-color: #218838;
+  }
+  
+  .tabla-cierres {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .tabla-cierres th,
+  .tabla-cierres td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .tabla-cierres th {
+    background-color: #f8f9fa;
+    font-weight: bold;
+  }
+  
+  .tabla-cierres tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  .tabla-cierres tr:hover {
+    background-color: #ddd;
+  }
+  
