@@ -15,7 +15,7 @@ const Configuracion = () => {
           <br></br>
           <h3>Administración de Usuarios</h3>
           <p>Gestión de permisos y control de acceso de los usuarios.</p>
-          <Link to="/admin-usuarios">
+          <Link to="/adm-usuario">
             <button className="config-button">Acceder</button>
           </Link>
         </div>

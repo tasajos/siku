@@ -9,6 +9,9 @@ import Encabezado from './Components/Layout/Encabezado';
 import BarraLateral from './Components/Layout/BarraLateral';
 import Login from './Components/Login/Login';
 import { getAuth, onAuthStateChanged } from 'firebase/auth'; // Firebase Authentication
+
+/////ADM usuarios
+import Admusuarios from './Components/Configuracion/AdmUsuarios/AdministracionUsuarios';
 import './App.css';
 
 function App() {
@@ -55,6 +58,7 @@ function App() {
               <Route path="/pagos" element={<Pagos />} />
               <Route path="/agregar-menu" element={<AgregarMenu />} />
               <Route path="/configuracion" element={<PaginaConfiguracion />} />
+              <Route path="/adm-usuario" element={<Admusuarios />} />
               <Route path="/login" element={<Navigate to="/" />} /> {/* Redirigir si ya está autenticado */}
               <Route path="*" element={<Navigate to="/menu" />} /> {/* Redirigir a menú por defecto */}
             </Routes>
