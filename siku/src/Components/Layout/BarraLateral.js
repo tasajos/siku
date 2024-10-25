@@ -10,6 +10,7 @@ const BarraLateral = () => {
         <li><Link to="/pagos">Pago</Link></li>
         <li><Link to="/pedidos">Pedidos</Link></li>
         <li><Link to="/configuracion">Configuración</Link></li>
+        <li><Link to="/agregar-menu">Agregar Menu</Link></li>
       </ul>
     </aside>
   );

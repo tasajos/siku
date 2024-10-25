@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import PaginaMenu from './Components/Paginas/PaginaMenu';
 import PaginaPedido from './Components/Paginas/PaginaPedidos';
 import Pagos from './Components/Paginas/PaginaPago'; // Nuevo componente de pagos
+import AgregarMenu  from './Components/Menu/AgregarMenu'; // Nuevo componente de pagos
 import Encabezado from './Components/Layout/Encabezado';
 import BarraLateral from './Components/Layout/BarraLateral';
 import './App.css';
@@ -27,6 +28,7 @@ function App() {
             <Route path="/menu" element={<PaginaMenu filtro={filtro} />} />
             <Route path="/pedidos" element={<PaginaPedido />} />
             <Route path="/pagos" element={<Pagos />} />
+            <Route path="/agregar-menu" element={<AgregarMenu />} />
             {/* Otras rutas aquí */}
           </Routes>
         </div>
