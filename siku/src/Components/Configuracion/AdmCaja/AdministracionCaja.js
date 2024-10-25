@@ -29,7 +29,7 @@ const AdministracionCaja = () => {
           <FontAwesomeIcon icon={faLock} className="admin-icon" />
           <h3>Cierre de Caja</h3>
           <p>Realiza el cierre de caja al final del día.</p>
-          <Link to="/cierre-caja">
+          <Link to="/cierrecajas">
             <button className="admin-button">Cerrar Caja</button>
           </Link>
         </div>
