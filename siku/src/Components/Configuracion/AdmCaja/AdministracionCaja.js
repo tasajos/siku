@@ -21,7 +21,7 @@ const AdministracionCaja = () => {
           <FontAwesomeIcon icon={faCashRegister} className="admin-icon" />
           <h3>Caja</h3>
           <p>Visualiza el estado actual de la caja y realiza ajustes.</p>
-          <Link to="/caja">
+          <Link to="/cajas">
             <button className="admin-button">Acceder a Caja</button>
           </Link>
         </div>

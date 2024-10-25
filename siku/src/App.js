@@ -20,6 +20,7 @@ import Modusuarios from './Components/Configuracion/AdmUsuarios/ModificarUsuario
 import Admclientes from './Components/Configuracion/AdmClientes/AdministracionClientes';
 /////ADM caja
 import Admccajas from './Components/Configuracion/AdmCaja/AdministracionCaja';
+import Cajas from './Components/Configuracion/AdmCaja/Caja';
 import './App.css';
 
 function App() {
@@ -71,6 +72,7 @@ function App() {
               <Route path="/list-usuario" element={<Listusuarios />} />
               <Route path="/mod-usuario" element={<Modusuarios />} />
               <Route path="/adm-clientes" element={<Admclientes />} />
+              <Route path="/cajas" element={<Cajas />} />
               <Route path="/adm-caja" element={<Admccajas />} />
               <Route path="/login" element={<Navigate to="/" />} /> {/* Redirigir si ya está autenticado */}
               <Route path="*" element={<Navigate to="/menu" />} /> {/* Redirigir a menú por defecto */}
