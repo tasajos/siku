@@ -1,14 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome, faUtensils, faMoneyBillAlt, faClipboardList, faCog, faPlusCircle } from '@fortawesome/free-solid-svg-icons'; // Agregar íconos necesarios
+import { faHome, faUtensils, faMoneyBillAlt, faClipboardList, faCog, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import './BarraLateral.css'; // Asegúrate de tener este archivo CSS para los estilos
+import logo from '../../assets/logo_cha.png'; // Importa la imagen del logo
 
 const BarraLateral = () => {
   return (
     <aside className="barra-lateral bg-danger text-light">
-      <div className="logo">
-        <h2 className="text-center">SIKU</h2>
+      <div className="logo text-center mt-3">
+        {/* Agregar el logo */}
+        <img src={logo} alt="Logo SIKU" className="logo-img mb-3" style={{ width: '100px', height: '100px' }} />
+        <h2 className="text-center"></h2>
       </div>
       <ul className="list-unstyled mt-4">
         <li>
