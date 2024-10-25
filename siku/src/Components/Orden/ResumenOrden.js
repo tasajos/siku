@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons'; // Importa el ícono de papelera
 import { Button, Modal, Form } from 'react-bootstrap'; // Importar los componentes de Bootstrap
 import { database } from '../../firebase'; // Asegúrate de importar Firebase
-import { ref, set, push, onValue } from 'firebase/database'; // Firebase methods
+import { ref, set, onValue } from 'firebase/database'; // Firebase methods
 
 const ResumenOrden = ({ pedido, cancelarPedido }) => {
   const [showModal, setShowModal] = useState(false); // Estado para controlar la visibilidad del modal
@@ -35,6 +35,13 @@ const ResumenOrden = ({ pedido, cancelarPedido }) => {
     setCambio(calculoCambio > 0 ? calculoCambio.toFixed(2) : 0);
   };
 
+  // Función para obtener la fecha y hora en formato HH:MM para la hora boliviana
+  const obtenerFechaYHora = () => {
+    const fechaActual = new Date();
+    const opciones = { timeZone: 'America/La_Paz', hour: '2-digit', minute: '2-digit' };
+    return fechaActual.toLocaleTimeString('es-BO', opciones);
+  };
+
   // Función para registrar el pedido en Firebase
   const registrarPedido = () => {
     const pedidoRef = ref(database, `pedidos/${numPedido}`);
@@ -45,6 +52,8 @@ const ResumenOrden = ({ pedido, cancelarPedido }) => {
       total: totalConServicio,
       menu: pedido,
       cambio: cambio,
+      hora: obtenerFechaYHora(), // Agregar la hora al pedido
+      fecha: new Date().toLocaleDateString('es-BO', { timeZone: 'America/La_Paz' }) // Fecha actual
     };
 
     set(pedidoRef, nuevoPedido)
