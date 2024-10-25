@@ -13,7 +13,7 @@ const ResumenOrden = ({ pedido, cancelarPedido }) => {
   const [numPedido, setNumPedido] = useState(0); // Estado para el número de pedido
 
   const total = pedido.reduce((acc, item) => acc + item.precio, 0);
-  const totalConServicio = (total * 1.1).toFixed(2); // Total con 10% de servicio
+  const totalConServicio = total; // Total sin servicio adicional
 
   // Funciones para abrir y cerrar el modal
   const handleShow = () => {
@@ -25,6 +25,7 @@ const ResumenOrden = ({ pedido, cancelarPedido }) => {
       setShowModal(true);
     }
   };
+
   const handleClose = () => {
     setShowModal(false);
     setBillete(0); // Reiniciar el campo de billete
@@ -101,7 +102,7 @@ const ResumenOrden = ({ pedido, cancelarPedido }) => {
         ))}
       </ul>
       <div>Subtotal: Bs {total}</div>
-      <div>Total con servicio: Bs {totalConServicio}</div>
+      <div>Total con servicio: Bs {totalConServicio}</div> {/* Ahora el servicio es 0 */}
       <br />
 
       {/* Contenedor para alinear los botones */}
