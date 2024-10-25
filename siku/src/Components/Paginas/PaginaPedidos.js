@@ -6,16 +6,25 @@ import './PaginaPedido.css'; // Estilos para las tarjetas
 
 const PaginaPedido = () => {
   const [pedidosPendientes, setPedidosPendientes] = useState([]);
+  const [pedidosTrabajando, setPedidosTrabajando] = useState([]);
 
   // Función para obtener los pedidos con estado "Pendiente"
   useEffect(() => {
     const pedidosRef = ref(database, 'pedidos');
     onValue(pedidosRef, (snapshot) => {
       const data = snapshot.val();
-      const pedidosFiltrados = data
+      
+      // Filtrar los pedidos "Pendiente"
+      const pedidosPendientesFiltrados = data
         ? Object.values(data).filter((pedido) => pedido.estado === 'Pendiente')
         : [];
-      setPedidosPendientes(pedidosFiltrados);
+      setPedidosPendientes(pedidosPendientesFiltrados);
+      
+      // Filtrar los pedidos "Trabajando"
+      const pedidosTrabajandoFiltrados = data
+        ? Object.values(data).filter((pedido) => pedido.estado === 'Trabajando')
+        : [];
+      setPedidosTrabajando(pedidosTrabajandoFiltrados);
     });
   }, []);
 
@@ -30,7 +39,7 @@ const PaginaPedido = () => {
   return (
     <div className="pedidos-container">
       <h2>Pedidos Pendientes</h2>
-      <br></br>
+      <br />
       <div className="cards-container">
         {pedidosPendientes.length > 0 ? (
           pedidosPendientes.map((pedido, index) => (
@@ -67,6 +76,43 @@ const PaginaPedido = () => {
           ))
         ) : (
           <p>No hay pedidos pendientes.</p>
+        )}
+      </div>
+
+<br></br>
+      {/* Sección para los pedidos en estado "Trabajando" */}
+      <h2>Pedidos Trabajando</h2>
+      <br />
+      <div className="cards-container">
+        {pedidosTrabajando.length > 0 ? (
+          pedidosTrabajando.map((pedido, index) => (
+            <Card key={index} className="pedido-card">
+              <Card.Body>
+                <Card.Title>Pedido #{pedido.numeroPedido}</Card.Title>
+                <Card.Text>Total: Bs {pedido.total}</Card.Text>
+                <Card.Text>Estado: {pedido.estado}</Card.Text>
+                <Card.Text>Hora: {pedido.hora}</Card.Text>
+
+                {/* Botones para cambiar el estado a "Entregado" o "Cancelado" */}
+                <div className="botones-pedido">
+                  <Button
+                    variant="success"
+                    onClick={() => actualizarEstado(pedido.numeroPedido, 'Entregado')}
+                  >
+                    Entregado
+                  </Button>
+                  <Button
+                    variant="danger"
+                    onClick={() => actualizarEstado(pedido.numeroPedido, 'Cancelado')}
+                  >
+                    Cancelar
+                  </Button>
+                </div>
+              </Card.Body>
+            </Card>
+          ))
+        ) : (
+          <p>No hay pedidos en estado "Trabajando".</p>
         )}
       </div>
     </div>
