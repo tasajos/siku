@@ -79,8 +79,8 @@
 }
 
 .contenido {
-  margin-left: 10%; /* Deja espacio para la barra lateral */
-  width: 90%; /* Ocupa el 70% restante */
+  margin-left: 20%; /* Deja espacio para la barra lateral */
+  width: 80%; /* Ocupa el 70% restante */
   padding: 2rem;
 }
 

@@ -12,6 +12,10 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth'; // Firebase Authent
 
 /////ADM usuarios
 import Admusuarios from './Components/Configuracion/AdmUsuarios/AdministracionUsuarios';
+import Addusuarios from './Components/Configuracion/AdmUsuarios/AgregarUsuario';
+import Listusuarios from './Components/Configuracion/AdmUsuarios/ListaUsuarios';
+import Modusuarios from './Components/Configuracion/AdmUsuarios/ModificarUsuario';
+
 /////ADM clientes
 import Admclientes from './Components/Configuracion/AdmClientes/AdministracionClientes';
 /////ADM caja
@@ -63,6 +67,9 @@ function App() {
               <Route path="/agregar-menu" element={<AgregarMenu />} />
               <Route path="/configuracion" element={<PaginaConfiguracion />} />
               <Route path="/adm-usuario" element={<Admusuarios />} />
+              <Route path="/add-usuario" element={<Addusuarios />} />
+              <Route path="/list-usuario" element={<Listusuarios />} />
+              <Route path="/mod-usuario" element={<Modusuarios />} />
               <Route path="/adm-clientes" element={<Admclientes />} />
               <Route path="/adm-caja" element={<Admccajas />} />
               <Route path="/login" element={<Navigate to="/" />} /> {/* Redirigir si ya está autenticado */}

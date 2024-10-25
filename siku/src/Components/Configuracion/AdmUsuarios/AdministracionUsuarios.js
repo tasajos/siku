@@ -13,7 +13,7 @@ const AdministracionUsuarios = () => {
           <FontAwesomeIcon icon={faList} className="admin-icon" />
           <h3>Lista de Usuarios</h3>
           <p>Consulta y visualiza la lista de todos los usuarios registrados.</p>
-          <Link to="/lista-usuarios">
+          <Link to="/list-usuario">
             <button className="admin-button">Ver Lista</button>
           </Link>
         </div>
@@ -21,7 +21,7 @@ const AdministracionUsuarios = () => {
           <FontAwesomeIcon icon={faUserPlus} className="admin-icon" />
           <h3>Añadir Usuario</h3>
           <p>Agrega nuevos usuarios con sus respectivas credenciales y permisos.</p>
-          <Link to="/añadir-usuario">
+          <Link to="/add-usuario">
             <button className="admin-button">Añadir Usuario</button>
           </Link>
         </div>
@@ -29,7 +29,7 @@ const AdministracionUsuarios = () => {
           <FontAwesomeIcon icon={faUserEdit} className="admin-icon" />
           <h3>Modificar Usuario</h3>
           <p>Actualiza la información de los usuarios y modifica sus permisos.</p>
-          <Link to="/modificar-usuario">
+          <Link to="/mod-usuario">
             <button className="admin-button">Modificar Usuario</button>
           </Link>
         </div>

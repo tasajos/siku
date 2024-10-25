@@ -1,0 +1,59 @@
+.lista-usuarios-container {
+    max-width: 900px;
+    margin: auto;
+    padding: 2rem;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 1.5rem;
+  }
+  
+  .search-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+  
+  .search-input {
+    width: 100%;
+    max-width: 500px;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+  }
+  
+  .usuarios-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+  }
+  
+  .usuarios-table th, .usuarios-table td {
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+  
+  .usuarios-table th {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+  }
+  
+  .usuarios-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  .no-results {
+    text-align: center;
+    color: #888;
+    margin-top: 1rem;
+    font-size: 1rem;
+  }
+  
