@@ -53,9 +53,19 @@ const PaginaPedido = () => {
             <Card key={index} className="pedido-card">
               <Card.Body>
                 <Card.Title>Pedido #{pedido.numeroPedido}</Card.Title>
-            {/*<Card.Text>Total: Bs {pedido.total}</Card.Text>*/}
                 <Card.Text>Estado: {pedido.estado}</Card.Text>
                 <Card.Text>Hora: {pedido.hora}</Card.Text>
+
+                {/* Detalle del menú */}
+                <Card.Text><strong>Menú:</strong></Card.Text>
+                <ul>
+                  {pedido.menu && pedido.menu.map((item, itemIndex) => (
+                    <li key={itemIndex}>
+                      <img src={item.imagen} alt={item.nombre} width="50" height="50" style={{ marginRight: '10px' }} />
+                      {item.nombre} 
+                    </li>
+                  ))}
+                </ul>
 
                 {/* Botones para cambiar el estado */}
                 <div className="botones-pedido">
@@ -95,9 +105,19 @@ const PaginaPedido = () => {
             <Card key={index} className="pedido-card">
               <Card.Body>
                 <Card.Title>Pedido #{pedido.numeroPedido}</Card.Title>
-                {/*<Card.Text>Total: Bs {pedido.total}</Card.Text>*/}
                 <Card.Text>Estado: {pedido.estado}</Card.Text>
                 <Card.Text>Hora: {pedido.hora}</Card.Text>
+
+                {/* Detalle del menú */}
+                <Card.Text><strong>Menú:</strong></Card.Text>
+                <ul>
+                  {pedido.menu && pedido.menu.map((item, itemIndex) => (
+                    <li key={itemIndex}>
+                      <img src={item.imagen} alt={item.nombre} width="50" height="50" style={{ marginRight: '10px' }} />
+                      {item.nombre} 
+                    </li>
+                  ))}
+                </ul>
 
                 {/* Botones para cambiar el estado a "Entregado" o "Cancelado" */}
                 <div className="botones-pedido">
@@ -121,9 +141,8 @@ const PaginaPedido = () => {
           <p>No hay pedidos en estado "Trabajando".</p>
         )}
       </div>
-
+<br></br>
       {/* Sección para los pedidos en estado "Cancelado" */}
-      <br></br>
       <h2>Pedidos Cancelados</h2>
       <br />
       <div className="cards-container">
@@ -132,9 +151,19 @@ const PaginaPedido = () => {
             <Card key={index} className="pedido-card">
               <Card.Body>
                 <Card.Title>Pedido #{pedido.numeroPedido}</Card.Title>
-               {/*<Card.Text>Total: Bs {pedido.total}</Card.Text>*/}
                 <Card.Text>Estado: {pedido.estado}</Card.Text>
                 <Card.Text>Hora: {pedido.hora}</Card.Text>
+
+                {/* Detalle del menú */}
+                <Card.Text><strong>Menú:</strong></Card.Text>
+                <ul>
+                  {pedido.menu && pedido.menu.map((item, itemIndex) => (
+                    <li key={itemIndex}>
+                      <img src={item.imagen} alt={item.nombre} width="50" height="50" style={{ marginRight: '10px' }} />
+                      {item.nombre} 
+                    </li>
+                  ))}
+                </ul>
 
                 {/* No mostrar botones en los pedidos cancelados */}
               </Card.Body>
