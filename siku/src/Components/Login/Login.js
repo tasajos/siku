@@ -29,29 +29,12 @@ const Login = () => {
     }
   };
 
-  // Manejar la recuperación de contraseña
-  const handlePasswordReset = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
-
-    try {
-      await sendPasswordResetEmail(auth, email);
-      setError('Se ha enviado un correo de recuperación.');
-    } catch (error) {
-      setError('Error al enviar el correo de recuperación.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
     <div className="login-container">
       <div className="login-box">
-        <h2>{showReset ? 'Recuperar Contraseña' : 'Iniciar Sesión'}</h2>
+        <h2>Iniciar Sesión</h2>
         {error && <p className="error-message">{error}</p>}
-        
-        <form onSubmit={showReset ? handlePasswordReset : handleLogin}>
+        <form onSubmit={handleLogin}>
           <div className="input-group">
             <label htmlFor="email">Correo Electrónico</label>
             <input
@@ -62,40 +45,22 @@ const Login = () => {
               required
             />
           </div>
-
-          {!showReset && (
-            <div className="input-group">
-              <label htmlFor="password">Contraseña</label>
-              <input
-                type="password"
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </div>
-          )}
-
+          <div className="input-group">
+            <label htmlFor="password">Contraseña</label>
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
           <div className="button-group">
             <button type="submit" className="login-button" disabled={loading}>
-              {loading ? 'Cargando...' : showReset ? 'Recuperar Contraseña' : 'Iniciar Sesión'}
+              {loading ? 'Cargando...' : 'Iniciar Sesión'}
             </button>
           </div>
         </form>
-
-        <div className="options">
-          {!showReset && (
-            <button className="reset-button" onClick={() => setShowReset(true)}>
-              ¿Olvidaste tu contraseña?
-            </button>
-          )}
-
-          {showReset && (
-            <button className="reset-button" onClick={() => setShowReset(false)}>
-              Volver al inicio de sesión
-            </button>
-          )}
-        </div>
       </div>
     </div>
   );

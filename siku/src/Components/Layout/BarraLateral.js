@@ -1,11 +1,27 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom'; // Usamos useNavigate para redirigir
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome, faUtensils, faMoneyBillAlt, faClipboardList, faCog, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
-import './BarraLateral.css'; // Asegúrate de tener este archivo CSS para los estilos
-import logo from '../../assets/logo_cha.png'; // Importa la imagen del logo
+import { faHome, faUtensils, faMoneyBillAlt, faClipboardList, faCog, faPlusCircle, faSignOutAlt } from '@fortawesome/free-solid-svg-icons'; // Añadir el icono de cerrar sesión
+import { getAuth, signOut } from 'firebase/auth'; // Importar Firebase Authentication
+import './BarraLateral.css';
+import logo from '../../assets/logo_cha.png'; // Importar el logo
 
 const BarraLateral = () => {
+  const navigate = useNavigate(); // Usamos navigate para redirigir al usuario
+
+  // Función para manejar el cierre de sesión
+  const handleLogout = () => {
+    const auth = getAuth();
+    signOut(auth)
+      .then(() => {
+        // Redirigir al login una vez que se haya cerrado la sesión
+        navigate('/login');
+      })
+      .catch((error) => {
+        console.error('Error al cerrar sesión:', error);
+      });
+  };
+
   return (
     <aside className="barra-lateral bg-danger text-light">
       <div className="logo text-center mt-3">
@@ -49,6 +65,13 @@ const BarraLateral = () => {
             <FontAwesomeIcon icon={faPlusCircle} className="mr-2" />
             Agregar Menú
           </Link>
+        </li>
+        {/* Botón para cerrar sesión */}
+        <li>
+          <button onClick={handleLogout} className="nav-link text-light btn btn-link">
+            <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" />
+            Cerrar Sesión
+          </button>
         </li>
       </ul>
     </aside>
