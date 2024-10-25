@@ -6,6 +6,7 @@ import Pagos from './Components/Paginas/PaginaPago';
 import AgregarMenu from './Components/Menu/AgregarMenu';
 import Encabezado from './Components/Layout/Encabezado';
 import BarraLateral from './Components/Layout/BarraLateral';
+import Login from './Components/Login/Login';
 import './App.css';
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
               <Route path="/pedidos" element={<PaginaPedido />} />
               <Route path="/pagos" element={<Pagos />} />
               <Route path="/agregar-menu" element={<AgregarMenu />} />
+              <Route path="/login" element={<Login />} />
               {/* Otras rutas aquí */}
             </Routes>
           </div>
