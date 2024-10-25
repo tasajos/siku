@@ -1,25 +1,36 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons'; // Importa el ícono de papelera
 import { Button, Modal, Form } from 'react-bootstrap'; // Importar los componentes de Bootstrap
 import { database } from '../../firebase'; // Asegúrate de importar Firebase
 import { ref, set, onValue } from 'firebase/database'; // Firebase methods
+import Recibo from './Recibo'; // Importar el componente Recibo
+import { useReactToPrint } from 'react-to-print'; // Para imprimir el recibo
 
 const ResumenOrden = ({ pedido, cancelarPedido }) => {
   const [showModal, setShowModal] = useState(false); // Estado para controlar la visibilidad del modal
+  const [showReciboModal, setShowReciboModal] = useState(false); // Estado para mostrar el modal del recibo
   const [showErrorModal, setShowErrorModal] = useState(false); // Estado para controlar el modal de error
   const [billete, setBillete] = useState(0); // Estado para almacenar el billete ingresado
   const [cambio, setCambio] = useState(0); // Estado para almacenar el cambio
   const [numPedido, setNumPedido] = useState(0); // Estado para el número de pedido
+  const [fecha, setFecha] = useState(''); // Estado para la fecha
+  const [hora, setHora] = useState(''); // Estado para la hora
+
+  const reciboRef = useRef(); // Referencia para el recibo
 
   const total = pedido.reduce((acc, item) => acc + item.precio, 0);
   const totalConServicio = total; // Total sin servicio adicional
 
+  // Función para imprimir el recibo
+  const handlePrint = useReactToPrint({
+    content: () => reciboRef.current,
+  });
+
   // Funciones para abrir y cerrar el modal
   const handleShow = () => {
     if (total === 0) {
-      // Mostrar modal de error si el subtotal es 0
-      setShowErrorModal(true);
+      setShowErrorModal(true); // Mostrar modal de error si el subtotal es 0
     } else {
       obtenerUltimoNumeroPedido(); // Obtener el número de pedido antes de abrir el modal
       setShowModal(true);
@@ -32,8 +43,7 @@ const ResumenOrden = ({ pedido, cancelarPedido }) => {
     setCambio(0); // Reiniciar el cambio
   };
 
-  // Función para manejar el cierre del modal de error
-  const handleErrorClose = () => setShowErrorModal(false);
+  const handleReciboClose = () => setShowReciboModal(false);
 
   // Función para manejar el cambio del billete ingresado
   const handleBilleteChange = (e) => {
@@ -49,7 +59,10 @@ const ResumenOrden = ({ pedido, cancelarPedido }) => {
   const obtenerFechaYHora = () => {
     const fechaActual = new Date();
     const opciones = { timeZone: 'America/La_Paz', hour: '2-digit', minute: '2-digit' };
-    return fechaActual.toLocaleTimeString('es-BO', opciones);
+    const fecha = fechaActual.toLocaleDateString('es-BO', { timeZone: 'America/La_Paz' });
+    const hora = fechaActual.toLocaleTimeString('es-BO', opciones);
+    setFecha(fecha);
+    setHora(hora);
   };
 
   // Función para registrar el pedido en Firebase
@@ -62,13 +75,14 @@ const ResumenOrden = ({ pedido, cancelarPedido }) => {
       total: totalConServicio,
       menu: pedido,
       cambio: cambio,
-      hora: obtenerFechaYHora(), // Agregar la hora al pedido
-      fecha: new Date().toLocaleDateString('es-BO', { timeZone: 'America/La_Paz' }) // Fecha actual
+      hora,
+      fecha
     };
 
     set(pedidoRef, nuevoPedido)
       .then(() => {
         alert('Pedido registrado con éxito');
+        setShowReciboModal(true); // Mostrar el modal con el recibo
         handleClose();
       })
       .catch((error) => {
@@ -89,6 +103,7 @@ const ResumenOrden = ({ pedido, cancelarPedido }) => {
         setNumPedido(1); // Si no hay pedidos previos, empieza desde 1
       }
     });
+    obtenerFechaYHora(); // Obtener la fecha y hora actual
   };
 
   return (
@@ -105,27 +120,25 @@ const ResumenOrden = ({ pedido, cancelarPedido }) => {
       <div>Total con servicio: Bs {totalConServicio}</div> {/* Ahora el servicio es 0 */}
       <br />
 
-      {/* Contenedor para alinear los botones */}
-      <div className="botones-orden" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-        {/* Botón para abrir el modal de pago */}
-        <Button 
-          variant="success" 
-          onClick={handleShow}
-          disabled={total === 0} // Deshabilitar el botón si el subtotal es 0
-        >
-          Pagar
-        </Button>
+      <div className="botones-orden" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '10px' }}>
+      {/* Botón para abrir el modal de pago */}
+      <Button 
+        variant="success" 
+        onClick={handleShow}
+        disabled={total === 0} // Deshabilitar el botón si el subtotal es 0
+      >
+        Pagar
+      </Button>
 
-        {/* Icono de papelera para cancelar la orden */}
-        <FontAwesomeIcon 
-          icon={faTrash} 
-          onClick={cancelarPedido} 
-          className="icono-cancelar" 
-          size="2x" 
-          style={{ cursor: 'pointer', color: '#d9534f' }} 
-        />
-      </div>
-
+      {/* Icono de papelera para cancelar la orden */}
+      <FontAwesomeIcon 
+        icon={faTrash} 
+        onClick={cancelarPedido} 
+        className="icono-cancelar" 
+        size="2x" 
+        style={{ cursor: 'pointer', color: '#d9534f' }} 
+      />
+</div>
       {/* Modal de Bootstrap para mostrar el total a pagar */}
       <Modal show={showModal} onHide={handleClose}>
         <Modal.Header closeButton>
@@ -154,7 +167,6 @@ const ResumenOrden = ({ pedido, cancelarPedido }) => {
           <Button variant="secondary" onClick={handleClose}>
             Cerrar
           </Button>
-          {/* Deshabilitar el botón si el billete es menor que el total */}
           <Button 
             variant="primary" 
             onClick={registrarPedido} 
@@ -166,7 +178,7 @@ const ResumenOrden = ({ pedido, cancelarPedido }) => {
       </Modal>
 
       {/* Modal de error para pedido inválido */}
-      <Modal show={showErrorModal} onHide={handleErrorClose}>
+      <Modal show={showErrorModal} onHide={() => setShowErrorModal(false)}>
         <Modal.Header closeButton>
           <Modal.Title>Pedido inválido</Modal.Title>
         </Modal.Header>
@@ -174,8 +186,33 @@ const ResumenOrden = ({ pedido, cancelarPedido }) => {
           <p>El monto no puede ser igual a 0. Por favor, seleccione productos antes de continuar.</p>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="primary" onClick={handleErrorClose}>
+          <Button variant="primary" onClick={() => setShowErrorModal(false)}>
             Aceptar
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* Modal para el recibo */}
+      <Modal show={showReciboModal} onHide={handleReciboClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Recibo del Pedido</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Recibo 
+            ref={reciboRef}
+            pedido={pedido}
+            total={totalConServicio}
+            numPedido={numPedido}
+            fecha={fecha}
+            hora={hora}
+          />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleReciboClose}>
+            Cerrar
+          </Button>
+          <Button variant="primary" onClick={handlePrint}>
+            Imprimir Recibo
           </Button>
         </Modal.Footer>
       </Modal>
