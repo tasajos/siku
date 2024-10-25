@@ -7,6 +7,7 @@ import { ref, set, onValue } from 'firebase/database'; // Firebase methods
 
 const ResumenOrden = ({ pedido, cancelarPedido }) => {
   const [showModal, setShowModal] = useState(false); // Estado para controlar la visibilidad del modal
+  const [showErrorModal, setShowErrorModal] = useState(false); // Estado para controlar el modal de error
   const [billete, setBillete] = useState(0); // Estado para almacenar el billete ingresado
   const [cambio, setCambio] = useState(0); // Estado para almacenar el cambio
   const [numPedido, setNumPedido] = useState(0); // Estado para el número de pedido
@@ -16,14 +17,22 @@ const ResumenOrden = ({ pedido, cancelarPedido }) => {
 
   // Funciones para abrir y cerrar el modal
   const handleShow = () => {
-    obtenerUltimoNumeroPedido(); // Obtener el número de pedido antes de abrir el modal
-    setShowModal(true);
+    if (total === 0) {
+      // Mostrar modal de error si el subtotal es 0
+      setShowErrorModal(true);
+    } else {
+      obtenerUltimoNumeroPedido(); // Obtener el número de pedido antes de abrir el modal
+      setShowModal(true);
+    }
   };
   const handleClose = () => {
     setShowModal(false);
     setBillete(0); // Reiniciar el campo de billete
     setCambio(0); // Reiniciar el cambio
   };
+
+  // Función para manejar el cierre del modal de error
+  const handleErrorClose = () => setShowErrorModal(false);
 
   // Función para manejar el cambio del billete ingresado
   const handleBilleteChange = (e) => {
@@ -98,7 +107,11 @@ const ResumenOrden = ({ pedido, cancelarPedido }) => {
       {/* Contenedor para alinear los botones */}
       <div className="botones-orden" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
         {/* Botón para abrir el modal de pago */}
-        <Button variant="success" onClick={handleShow}>
+        <Button 
+          variant="success" 
+          onClick={handleShow}
+          disabled={total === 0} // Deshabilitar el botón si el subtotal es 0
+        >
           Pagar
         </Button>
 
@@ -147,6 +160,21 @@ const ResumenOrden = ({ pedido, cancelarPedido }) => {
             disabled={billete < totalConServicio}
           >
             Confirmar Pago
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* Modal de error para pedido inválido */}
+      <Modal show={showErrorModal} onHide={handleErrorClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Pedido inválido</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>El monto no puede ser igual a 0. Por favor, seleccione productos antes de continuar.</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary" onClick={handleErrorClose}>
+            Aceptar
           </Button>
         </Modal.Footer>
       </Modal>
