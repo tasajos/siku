@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import PaginaMenu from './Components/Paginas/PaginaMenu';
 import PaginaPedido from './Components/Paginas/PaginaPedidos';
+import PaginaConfiguracion from './Components/Paginas/PaginaConfiguracion';
 import Pagos from './Components/Paginas/PaginaPago'; 
 import AgregarMenu from './Components/Menu/AgregarMenu';
 import Encabezado from './Components/Layout/Encabezado';
@@ -53,6 +54,7 @@ function App() {
               <Route path="/pedidos" element={<PaginaPedido />} />
               <Route path="/pagos" element={<Pagos />} />
               <Route path="/agregar-menu" element={<AgregarMenu />} />
+              <Route path="/configuracion" element={<PaginaConfiguracion />} />
               <Route path="/login" element={<Navigate to="/" />} /> {/* Redirigir si ya está autenticado */}
               <Route path="*" element={<Navigate to="/menu" />} /> {/* Redirigir a menú por defecto */}
             </Routes>
