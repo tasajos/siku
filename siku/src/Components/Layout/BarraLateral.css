@@ -1,0 +1,46 @@
+.barra-lateral {
+    width: 250px;
+    height: 100vh;
+    background-color: #d32f2f; /* Rojo estilo Burger King */
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .logo {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    color: white;
+  }
+  
+  .barra-lateral ul {
+    padding-left: 0;
+  }
+  
+  .barra-lateral li {
+    margin-bottom: 20px;
+  }
+  
+  .barra-lateral .nav-link {
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    padding: 10px 0;
+    transition: background-color 0.2s ease-in-out;
+  }
+  
+  .barra-lateral .nav-link:hover {
+    background-color: #c1272d; /* Un tono más oscuro al hacer hover */
+    border-radius: 10px;
+    text-decoration: none;
+  }
+  
+  .barra-lateral .mr-2 {
+    margin-right: 10px;
+  }
+  
