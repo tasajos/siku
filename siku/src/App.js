@@ -2,11 +2,10 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import PaginaMenu from './Components/Paginas/PaginaMenu';
 import PaginaPedido from './Components/Paginas/PaginaPedidos';
-import Pagos from './Components/Paginas/PaginaPago'; // Nuevo componente de pagos
-import AgregarMenu  from './Components/Menu/AgregarMenu'; // Nuevo componente de pagos
+import Pagos from './Components/Paginas/PaginaPago'; 
+import AgregarMenu from './Components/Menu/AgregarMenu';
 import Encabezado from './Components/Layout/Encabezado';
 import BarraLateral from './Components/Layout/BarraLateral';
-import Recibo from './Components/Orden/Recibo';
 import './App.css';
 
 function App() {
@@ -20,18 +19,20 @@ function App() {
   return (
     <Router>
       <div className="App">
-        {/* Encabezado maneja la búsqueda y actualiza el estado global */}
         <Encabezado onSearch={manejarBusqueda} />
         <div className="contenido">
+          {/* Barra lateral al 30% */}
           <BarraLateral />
-          <Routes>
-            {/* Pasamos el filtro a PaginaMenu */}
-            <Route path="/menu" element={<PaginaMenu filtro={filtro} />} />
-            <Route path="/pedidos" element={<PaginaPedido />} />
-            <Route path="/pagos" element={<Pagos />} />
-            <Route path="/agregar-menu" element={<AgregarMenu />} />
-            {/* Otras rutas aquí */}
-          </Routes>
+          {/* Contenido principal al 70% */}
+          <div className="contenido-principal">
+            <Routes>
+              <Route path="/menu" element={<PaginaMenu filtro={filtro} />} />
+              <Route path="/pedidos" element={<PaginaPedido />} />
+              <Route path="/pagos" element={<Pagos />} />
+              <Route path="/agregar-menu" element={<AgregarMenu />} />
+              {/* Otras rutas aquí */}
+            </Routes>
+          </div>
         </div>
       </div>
     </Router>
