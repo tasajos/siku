@@ -1,19 +1,18 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Para redirigir
-import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
-import './Login.css'; // Estilos personalizados para el formulario
+import { useNavigate } from 'react-router-dom';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import './Login.css';
+import logo from '../../assets/logo_cha.png'; // Asegúrate de tener la imagen del logo
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [showReset, setShowReset] = useState(false); // Estado para mostrar o ocultar la recuperación de contraseña
 
   const navigate = useNavigate();
-  const auth = getAuth(); // Inicializamos la autenticación de Firebase
+  const auth = getAuth();
 
-  // Manejar el inicio de sesión
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -21,7 +20,7 @@ const Login = () => {
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      navigate('/'); // Redirige al inicio después de iniciar sesión correctamente
+      navigate('/');
     } catch (error) {
       setError('Error en el inicio de sesión. Verifica tus credenciales.');
     } finally {
@@ -32,6 +31,8 @@ const Login = () => {
   return (
     <div className="login-container">
       <div className="login-box">
+        {/* Logo en la parte superior */}
+        <img src={logo} alt="Logo SIKU" className="login-logo" />
         <h2>Iniciar Sesión</h2>
         {error && <p className="error-message">{error}</p>}
         <form onSubmit={handleLogin}>
