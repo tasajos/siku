@@ -6,6 +6,7 @@ import Pagos from './Components/Paginas/PaginaPago'; // Nuevo componente de pago
 import AgregarMenu  from './Components/Menu/AgregarMenu'; // Nuevo componente de pagos
 import Encabezado from './Components/Layout/Encabezado';
 import BarraLateral from './Components/Layout/BarraLateral';
+import Recibo from './Components/Orden/Recibo';
 import './App.css';
 
 function App() {
