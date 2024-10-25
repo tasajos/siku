@@ -72,7 +72,7 @@ const PaginaPagos = () => {
 
   return (
     <div className="pagos-container">
-      <h2>Pagos y Ventas por Día</h2>
+      <h2>Ventas por Día</h2>
       <table className="tabla-ventas">
         <thead>
           <tr>
