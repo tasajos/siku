@@ -40,13 +40,13 @@
 }
 
 .barra-lateral {
-  width: 20%; /* Ocupa el 30% del ancho de la pantalla */
+  width: 15%; /* Ocupa el 30% del ancho de la pantalla */
   background-color: #d32f2f; /* Color estilo Burger King */
   color: white;
   padding: 1rem;
   height: calc(100vh - 60px); /* Restar el tamaño del encabezado */
   position: fixed; /* Fijar la barra lateral */
-  top: 60px; /* Debajo del encabezado */
+  top: 80px; /* Debajo del encabezado */
   left: 0;
   overflow-y: auto; /* Desplazamiento si hay más contenido */
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Sombra */
