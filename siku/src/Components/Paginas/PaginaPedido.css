@@ -1,0 +1,63 @@
+.pedidos-container {
+    padding: 20px;
+    background-color: #f8f9fa; /* Color de fondo claro */
+  }
+  
+  .cards-container {
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 20px;
+    justify-content: center;
+  }
+  
+  .pedido-card {
+    width: 340px; /* Aumentar el tamaño de la tarjeta */
+    min-height: 250px; /* Agregar una altura mínima para que no corte los botones */
+    padding: 15px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+    background-color: #fff;
+    border: 2px solid #ff4500; /* Color de borde similar a Burger King */
+  }
+  
+  .pedido-card:hover {
+    transform: scale(1.05); /* Efecto hover */
+  }
+  
+  .pedido-card .card-title {
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: #ff4500; /* Naranja característico */
+  }
+  
+  .pedido-card .card-text {
+    font-size: 1.1rem;
+    color: #555;
+  }
+  
+  .botones-pedido {
+    display: flex;
+    justify-content: space-around;
+    gap: 10px; /* Separación entre botones */
+    margin-top: 20px;
+  }
+  
+  .botones-pedido .btn-warning {
+    background-color: #ffc107;
+    border-color: #ffc107;
+    width: 100%; /* Ancho completo */
+  }
+  
+  .botones-pedido .btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+    width: 100%;
+  }
+  
+  .botones-pedido .btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    width: 100%;
+  }
