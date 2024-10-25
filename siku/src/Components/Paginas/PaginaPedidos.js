@@ -7,8 +7,9 @@ import './PaginaPedido.css'; // Estilos para las tarjetas
 const PaginaPedido = () => {
   const [pedidosPendientes, setPedidosPendientes] = useState([]);
   const [pedidosTrabajando, setPedidosTrabajando] = useState([]);
+  const [pedidosCancelados, setPedidosCancelados] = useState([]);
 
-  // Función para obtener los pedidos con estado "Pendiente"
+  // Función para obtener los pedidos con estado "Pendiente", "Trabajando" y "Cancelado"
   useEffect(() => {
     const pedidosRef = ref(database, 'pedidos');
     onValue(pedidosRef, (snapshot) => {
@@ -25,6 +26,12 @@ const PaginaPedido = () => {
         ? Object.values(data).filter((pedido) => pedido.estado === 'Trabajando')
         : [];
       setPedidosTrabajando(pedidosTrabajandoFiltrados);
+
+      // Filtrar los pedidos "Cancelado"
+      const pedidosCanceladosFiltrados = data
+        ? Object.values(data).filter((pedido) => pedido.estado === 'Cancelado')
+        : [];
+      setPedidosCancelados(pedidosCanceladosFiltrados);
     });
   }, []);
 
@@ -46,7 +53,7 @@ const PaginaPedido = () => {
             <Card key={index} className="pedido-card">
               <Card.Body>
                 <Card.Title>Pedido #{pedido.numeroPedido}</Card.Title>
-                <Card.Text>Total: Bs {pedido.total}</Card.Text>
+            {/*<Card.Text>Total: Bs {pedido.total}</Card.Text>*/}
                 <Card.Text>Estado: {pedido.estado}</Card.Text>
                 <Card.Text>Hora: {pedido.hora}</Card.Text>
 
@@ -78,7 +85,6 @@ const PaginaPedido = () => {
           <p>No hay pedidos pendientes.</p>
         )}
       </div>
-
 <br></br>
       {/* Sección para los pedidos en estado "Trabajando" */}
       <h2>Pedidos Trabajando</h2>
@@ -89,7 +95,7 @@ const PaginaPedido = () => {
             <Card key={index} className="pedido-card">
               <Card.Body>
                 <Card.Title>Pedido #{pedido.numeroPedido}</Card.Title>
-                <Card.Text>Total: Bs {pedido.total}</Card.Text>
+                {/*<Card.Text>Total: Bs {pedido.total}</Card.Text>*/}
                 <Card.Text>Estado: {pedido.estado}</Card.Text>
                 <Card.Text>Hora: {pedido.hora}</Card.Text>
 
@@ -113,6 +119,29 @@ const PaginaPedido = () => {
           ))
         ) : (
           <p>No hay pedidos en estado "Trabajando".</p>
+        )}
+      </div>
+
+      {/* Sección para los pedidos en estado "Cancelado" */}
+      <br></br>
+      <h2>Pedidos Cancelados</h2>
+      <br />
+      <div className="cards-container">
+        {pedidosCancelados.length > 0 ? (
+          pedidosCancelados.map((pedido, index) => (
+            <Card key={index} className="pedido-card">
+              <Card.Body>
+                <Card.Title>Pedido #{pedido.numeroPedido}</Card.Title>
+               {/*<Card.Text>Total: Bs {pedido.total}</Card.Text>*/}
+                <Card.Text>Estado: {pedido.estado}</Card.Text>
+                <Card.Text>Hora: {pedido.hora}</Card.Text>
+
+                {/* No mostrar botones en los pedidos cancelados */}
+              </Card.Body>
+            </Card>
+          ))
+        ) : (
+          <p>No hay pedidos cancelados.</p>
         )}
       </div>
     </div>
