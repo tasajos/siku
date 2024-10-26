@@ -1,11 +1,11 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Button, Modal, Form } from 'react-bootstrap';
 import { database } from '../../firebase';
 import { ref, set, onValue } from 'firebase/database';
 import Recibo from './Recibo';
-import jsPDF from 'jspdf'; // Importar jsPDF para generar el PDF
+import jsPDF from 'jspdf';
 
 const ResumenOrden = ({ pedido, cancelarPedido }) => {
   const [showModal, setShowModal] = useState(false);
@@ -16,6 +16,21 @@ const ResumenOrden = ({ pedido, cancelarPedido }) => {
   const [numPedido, setNumPedido] = useState(0);
   const [fecha, setFecha] = useState('');
   const [hora, setHora] = useState('');
+  const [cajaActiva, setCajaActiva] = useState(false);
+  const [montoApertura, setMontoApertura] = useState(0);
+
+  useEffect(() => {
+    const cajaActivaRef = ref(database, 'cajas/aperturaActiva');
+    onValue(cajaActivaRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data && data.activa) {
+        setCajaActiva(true);
+        setMontoApertura(data.monto);
+      } else {
+        setCajaActiva(false);
+      }
+    });
+  }, []);
 
   const total = pedido.reduce((acc, item) => acc + item.precio, 0);
   const totalConServicio = total;
@@ -23,27 +38,17 @@ const ResumenOrden = ({ pedido, cancelarPedido }) => {
   // Función para generar el PDF del recibo
   const handleGeneratePDF = () => {
     const doc = new jsPDF();
-    
-    // Título del recibo
     doc.setFontSize(16);
     doc.text('Recibo del Pedido', 20, 20);
-
-    // Detalles del pedido
     doc.setFontSize(12);
     doc.text(`Número de Pedido: ${numPedido}`, 20, 30);
     doc.text(`Fecha: ${fecha}`, 20, 40);
     doc.text(`Hora: ${hora}`, 20, 50);
-    
-    // Listado de productos
     doc.text('Detalle del Pedido:', 20, 60);
     pedido.forEach((item, index) => {
       doc.text(`${index + 1}. ${item.nombre} - Bs ${item.precio}`, 20, 70 + index * 10);
     });
-
-    // Total
     doc.text(`Total: Bs ${totalConServicio}`, 20, 80 + pedido.length * 10);
-
-    // Descargar el PDF
     doc.save(`Recibo_Pedido_${numPedido}.pdf`);
   };
 
@@ -51,15 +56,15 @@ const ResumenOrden = ({ pedido, cancelarPedido }) => {
     if (total === 0) {
       setShowErrorModal(true);
     } else {
-      obtenerUltimoNumeroPedido(); 
+      obtenerUltimoNumeroPedido();
       setShowModal(true);
     }
   };
 
   const handleClose = () => {
     setShowModal(false);
-    setBillete(0); 
-    setCambio(0); 
+    setBillete(0);
+    setCambio(0);
   };
 
   const handleReciboClose = () => setShowReciboModal(false);
@@ -74,10 +79,8 @@ const ResumenOrden = ({ pedido, cancelarPedido }) => {
   const obtenerFechaYHora = () => {
     const fechaActual = new Date();
     const opciones = { timeZone: 'America/La_Paz', hour: '2-digit', minute: '2-digit' };
-    const fecha = fechaActual.toLocaleDateString('es-BO', { timeZone: 'America/La_Paz' });
-    const hora = fechaActual.toLocaleTimeString('es-BO', opciones);
-    setFecha(fecha);
-    setHora(hora);
+    setFecha(fechaActual.toLocaleDateString('es-BO', { timeZone: 'America/La_Paz' }));
+    setHora(fechaActual.toLocaleTimeString('es-BO', opciones));
   };
 
   const registrarPedido = () => {
@@ -95,7 +98,7 @@ const ResumenOrden = ({ pedido, cancelarPedido }) => {
     set(pedidoRef, nuevoPedido)
       .then(() => {
         alert('Pedido registrado con éxito');
-        setShowReciboModal(true); 
+        setShowReciboModal(true);
         handleClose();
       })
       .catch((error) => {
@@ -121,6 +124,7 @@ const ResumenOrden = ({ pedido, cancelarPedido }) => {
   return (
     <div className="resumen-orden">
       <h2>Resumen de Orden</h2>
+      {cajaActiva && <p>Monto de Apertura de Caja: Bs {parseFloat(montoApertura).toFixed(2)}</p>}
       <ul>
         {pedido.map((item, index) => (
           <li key={index}>
@@ -136,7 +140,7 @@ const ResumenOrden = ({ pedido, cancelarPedido }) => {
         <Button 
           variant="success" 
           onClick={handleShow}
-          disabled={total === 0}
+          disabled={!cajaActiva}
         >
           Pagar
         </Button>
