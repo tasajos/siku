@@ -1,10 +1,11 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Button, Modal, Form } from 'react-bootstrap';
 import { database } from '../../firebase';
-import { ref, set, onValue } from 'firebase/database';
+import { ref, onValue,set } from 'firebase/database';
 import Recibo from './Recibo';
+
 import jsPDF from 'jspdf';
 
 const ResumenOrden = ({ pedido, cancelarPedido }) => {
@@ -16,18 +17,32 @@ const ResumenOrden = ({ pedido, cancelarPedido }) => {
   const [numPedido, setNumPedido] = useState(0);
   const [fecha, setFecha] = useState('');
   const [hora, setHora] = useState('');
-  const [cajaActiva, setCajaActiva] = useState(false);
+  const [cajaEstado, setCajaEstado] = useState(''); // 'activa', 'cerrada', 'no_apertura'
   const [montoApertura, setMontoApertura] = useState(0);
 
   useEffect(() => {
-    const cajaActivaRef = ref(database, 'cajas/aperturaActiva');
-    onValue(cajaActivaRef, (snapshot) => {
+    const obtenerFechaActual = () => {
+      const fechaActual = new Date();
+      const dia = String(fechaActual.getDate()).padStart(2, '0');
+      const mes = String(fechaActual.getMonth() + 1).padStart(2, '0');
+      const año = fechaActual.getFullYear();
+      return `${año}-${mes}-${dia}`;
+    };
+
+    const fechaHoy = obtenerFechaActual();
+    const cajaRef = ref(database, `cajas/${fechaHoy}`);
+
+    onValue(cajaRef, (snapshot) => {
       const data = snapshot.val();
-      if (data && data.activa) {
-        setCajaActiva(true);
-        setMontoApertura(data.monto);
+      if (data) {
+        if (data.estado === 'Aperturada') {
+          setCajaEstado('activa');
+          setMontoApertura(data.monto);
+        } else {
+          setCajaEstado('cerrada');
+        }
       } else {
-        setCajaActiva(false);
+        setCajaEstado('no_apertura');
       }
     });
   }, []);
@@ -35,7 +50,6 @@ const ResumenOrden = ({ pedido, cancelarPedido }) => {
   const total = pedido.reduce((acc, item) => acc + item.precio, 0);
   const totalConServicio = total;
 
-  // Función para generar el PDF del recibo
   const handleGeneratePDF = () => {
     const doc = new jsPDF();
     doc.setFontSize(16);
@@ -121,10 +135,19 @@ const ResumenOrden = ({ pedido, cancelarPedido }) => {
     obtenerFechaYHora();
   };
 
+  const getMensajeCaja = () => {
+    if (cajaEstado === 'cerrada') return 'Caja Cerrada';
+    if (cajaEstado === 'no_apertura') return 'No hay caja aperturada';
+    if (cajaEstado === 'activa') return `Monto de Apertura de Caja: Bs ${parseFloat(montoApertura).toFixed(2)}`;
+    return '';
+  };
+
   return (
     <div className="resumen-orden">
       <h2>Resumen de Orden</h2>
-      {cajaActiva && <p>Monto de Apertura de Caja: Bs {parseFloat(montoApertura).toFixed(2)}</p>}
+      <p style={{ color: cajaEstado === 'cerrada' ? 'red' : cajaEstado === 'no_apertura' ? 'blue' : 'green' }}>
+        {getMensajeCaja()}
+      </p>
       <ul>
         {pedido.map((item, index) => (
           <li key={index}>
@@ -140,7 +163,7 @@ const ResumenOrden = ({ pedido, cancelarPedido }) => {
         <Button 
           variant="success" 
           onClick={handleShow}
-          disabled={!cajaActiva}
+          disabled={cajaEstado !== 'activa'} // Deshabilitar si la caja no está activa
         >
           Pagar
         </Button>
