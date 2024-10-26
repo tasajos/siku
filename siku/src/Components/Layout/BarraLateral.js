@@ -1,20 +1,19 @@
-import React from 'react';
-import { Link, useNavigate } from 'react-router-dom'; // Usamos useNavigate para redirigir
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome, faUtensils, faMoneyBillAlt, faClipboardList, faCog, faPlusCircle, faSignOutAlt } from '@fortawesome/free-solid-svg-icons'; // Añadir el icono de cerrar sesión
-import { getAuth, signOut } from 'firebase/auth'; // Importar Firebase Authentication
+import { faHome, faUtensils, faMoneyBillAlt, faClipboardList, faCog, faPlusCircle, faSignOutAlt, faChevronDown, faHamburger, faPizzaSlice } from '@fortawesome/free-solid-svg-icons';
+import { getAuth, signOut } from 'firebase/auth';
 import './BarraLateral.css';
-import logo from '../../assets/logo_cha.png'; // Importar el logo
+import logo from '../../assets/logo_cha.png';
 
 const BarraLateral = () => {
-  const navigate = useNavigate(); // Usamos navigate para redirigir al usuario
+  const [submenuVisible, setSubmenuVisible] = useState(false);
+  const navigate = useNavigate();
 
-  // Función para manejar el cierre de sesión
   const handleLogout = () => {
     const auth = getAuth();
     signOut(auth)
       .then(() => {
-        // Redirigir al login una vez que se haya cerrado la sesión
         navigate('/login');
       })
       .catch((error) => {
@@ -22,12 +21,14 @@ const BarraLateral = () => {
       });
   };
 
+  const toggleSubmenu = () => {
+    setSubmenuVisible(!submenuVisible);
+  };
+
   return (
     <aside className="barra-lateral bg-danger text-light">
       <div className="logo text-center mt-3">
-        {/* Agregar el logo */}
         <img src={logo} alt="Logo SIKU" className="logo-img mb-3" style={{ width: '100px', height: '100px' }} />
-        <h2 className="text-center"></h2>
       </div>
       <ul className="list-unstyled mt-4">
         <li>
@@ -61,12 +62,28 @@ const BarraLateral = () => {
           </Link>
         </li>
         <li>
-          <Link to="/agregar-menu" className="nav-link text-light">
+          <button onClick={toggleSubmenu} className="nav-link text-light btn btn-link d-flex align-items-center">
             <FontAwesomeIcon icon={faPlusCircle} className="mr-2" />
-            Agregar Menú
-          </Link>
+            Configuracion Menú
+            <FontAwesomeIcon icon={faChevronDown} className={`ml-auto ${submenuVisible ? 'rotate-icon' : ''}`} />
+          </button>
+          {submenuVisible && (
+            <ul className="submenu">
+              <li>
+                <Link to="/agregar-menu" className="submenu-link">
+                  <FontAwesomeIcon icon={faHamburger} className="mr-2" />
+                  Nuevo Producto
+                </Link>
+              </li>
+              <li>
+                <Link to="/nueva-categoria" className="submenu-link">
+                  <FontAwesomeIcon icon={faPizzaSlice} className="mr-2" />
+                  Nueva Categoría
+                </Link>
+              </li>
+            </ul>
+          )}
         </li>
-        {/* Botón para cerrar sesión */}
         <li>
           <button onClick={handleLogout} className="nav-link text-light btn btn-link">
             <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" />
