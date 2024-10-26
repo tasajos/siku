@@ -13,7 +13,7 @@ const AdministracionClientes = () => {
           <FontAwesomeIcon icon={faUsers} className="admin-icon" />
           <h3>Lista de Clientes</h3>
           <p>Consulta y visualiza la lista de todos los clientes registrados.</p>
-          <Link to="/lista-clientes">
+          <Link to="/list-clientes">
             <button className="admin-button">Ver Lista</button>
           </Link>
         </div>

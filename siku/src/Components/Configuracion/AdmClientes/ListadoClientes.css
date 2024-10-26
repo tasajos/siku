@@ -1,0 +1,53 @@
+.lista-clientes-container {
+    max-width: 900px;
+    margin: auto;
+    padding: 2rem;
+    background-color: #ffffffd7;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 1.5rem;
+}
+
+.search-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+}
+
+.search-input {
+    padding: 0.5rem;
+    width: 100%;
+    max-width: 400px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.clientes-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+.clientes-table th,
+.clientes-table td {
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.clientes-table th {
+    background-color: #728ced;
+    font-weight: bold;
+}
+
+.no-results {
+    text-align: center;
+    color: #888;
+    margin-top: 1rem;
+    font-style: italic;
+}
