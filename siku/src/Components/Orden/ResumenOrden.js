@@ -50,57 +50,71 @@ const ResumenOrden = ({ pedido, cancelarPedido }) => {
   const totalConServicio = total;
 
   const handleGeneratePDF = () => {
-    const doc = new jsPDF();
-    
-    // Configuración de fuente
+    const doc = new jsPDF({
+      orientation: 'portrait',
+      unit: 'pt',
+      format: [226, 600], // Tamaño de recibo ajustado
+    });
+  
     doc.setFont("courier", "normal");
-    doc.setFontSize(12);
-  
-    // Encabezado
-    doc.text("PRINCIPAL", 105, 10, null, null, "center");
     doc.setFontSize(10);
-    doc.text(`Recibo No: ${numPedido}`, 20, 20);
-    doc.text(`Fecha: ${fecha}  Hora: ${hora}`, 20, 30);
-   // doc.text(`Mesa: 02`, 20, 40);  // Ejemplo de mesa fija
-   // doc.text(`Mesero: Nombre del Mesero`, 20, 50);
   
-    // Encabezado de tabla de productos
-    doc.text("PRODUCTO", 20, 60);
-    doc.text("CANT", 100, 60);
-    doc.text("P.UNI", 120, 60);
-    doc.text("TOTAL", 160, 60);
+    // Agrupar productos por nombre
+    const productosAgrupados = {};
+    pedido.forEach((item) => {
+      if (productosAgrupados[item.nombre]) {
+        productosAgrupados[item.nombre].cantidad += 1;
+        productosAgrupados[item.nombre].total += item.precio;
+      } else {
+        productosAgrupados[item.nombre] = {
+          nombre: item.nombre,
+          precio: item.precio,
+          cantidad: 1,
+          total: item.precio,
+        };
+      }
+    });
   
-    // Líneas de separación
-    doc.line(20, 62, 190, 62);
+    // Encabezado del recibo
+    doc.text("PRINCIPAL", 113, 20, null, null, "center");
+    doc.setFontSize(8);
+    doc.text(`Recibo No: ${numPedido}`, 10, 40);
+    doc.text(`Fecha: ${fecha}`, 10, 50);
+    doc.text(`Hora: ${hora}`, 10, 60);
   
-    // Listado de productos
-    let yPosition = 70;
-    pedido.forEach((item, index) => {
-      doc.text(item.nombre, 20, yPosition);
-      doc.text("1", 100, yPosition);  // Asumiendo cantidad fija de 1
-      doc.text(`Bs ${item.precio.toFixed(2)}`, 120, yPosition);
-      doc.text(`Bs ${item.precio.toFixed(2)}`, 160, yPosition);
+    // Encabezado de productos
+    doc.text("PRODUCTO", 10, 80);
+    doc.text("CANT", 90, 80);
+    doc.text("P.UNI", 130, 80);
+    doc.text("TOTAL", 180, 80);
+  
+    // Línea de separación
+    doc.line(10, 85, 216, 85);
+  
+    // Detalle de productos agrupados
+    let yPosition = 95;
+    Object.values(productosAgrupados).forEach((item) => {
+      doc.text(item.nombre, 10, yPosition);
+      doc.text(`${item.cantidad}`, 90, yPosition);
+      doc.text(`Bs ${item.precio.toFixed(2)}`, 130, yPosition);
+      doc.text(`Bs ${item.total.toFixed(2)}`, 180, yPosition);
       yPosition += 10;
     });
   
-    // Líneas de separación antes del total
-    doc.line(20, yPosition, 190, yPosition);
+    // Línea de separación antes del total
+    doc.line(10, yPosition, 216, yPosition);
     yPosition += 10;
   
     // Total a pagar
-    doc.setFontSize(12);
-    doc.text(`TOTAL A PAGAR => Bs ${totalConServicio.toFixed(2)}`, 20, yPosition);
-    yPosition += 10;
-    //doc.text("No incluye Ser.Voluntario", 20, yPosition);
-    
-    yPosition += 10;
-   // doc.text(`Numero de Personas atendidas: 1`, 20, yPosition);  // Ejemplo de personas atendidas
+    doc.setFontSize(10);
+    doc.text(`TOTAL A PAGAR: Bs ${totalConServicio.toFixed(2)}`, 10, yPosition);
+    yPosition += 15;
   
-    // Pie de página
+    // Pie de página con detalles del software
     yPosition += 20;
-    doc.setFontSize(8);
-    doc.text("Software: SIKU", 105, yPosition, null, null, "center");
-    doc.text("Desarrollado por Chakuy.", 105, yPosition + 10, null, null, "center");
+    doc.setFontSize(6);
+    doc.text("Software: SIKU", 113, yPosition, null, null, "center");
+    doc.text("Desarrollado por Chakuy", 113, yPosition + 10, null, null, "center");
   
     // Abrir el PDF en una nueva pestaña para vista previa e impresión
     window.open(doc.output("bloburl"), "_blank");
