@@ -21,7 +21,7 @@ const AdministracionClientes = () => {
           <FontAwesomeIcon icon={faUserPlus} className="admin-icon" />
           <h3>Añadir Cliente</h3>
           <p>Agrega nuevos clientes con sus datos de contacto y detalles relevantes.</p>
-          <Link to="/añadir-cliente">
+          <Link to="/add-clientes">
             <button className="admin-button">Añadir Cliente</button>
           </Link>
         </div>
