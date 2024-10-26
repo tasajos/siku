@@ -3,9 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Button, Modal, Form } from 'react-bootstrap';
 import { database } from '../../firebase';
-import { ref, onValue,set } from 'firebase/database';
+import { ref, onValue, set } from 'firebase/database';
 import Recibo from './Recibo';
-
 import jsPDF from 'jspdf';
 
 const ResumenOrden = ({ pedido, cancelarPedido }) => {
@@ -52,18 +51,59 @@ const ResumenOrden = ({ pedido, cancelarPedido }) => {
 
   const handleGeneratePDF = () => {
     const doc = new jsPDF();
-    doc.setFontSize(16);
-    doc.text('Recibo del Pedido', 20, 20);
+    
+    // Configuración de fuente
+    doc.setFont("courier", "normal");
     doc.setFontSize(12);
-    doc.text(`Número de Pedido: ${numPedido}`, 20, 30);
-    doc.text(`Fecha: ${fecha}`, 20, 40);
-    doc.text(`Hora: ${hora}`, 20, 50);
-    doc.text('Detalle del Pedido:', 20, 60);
+  
+    // Encabezado
+    doc.text("PRINCIPAL", 105, 10, null, null, "center");
+    doc.setFontSize(10);
+    doc.text(`Recibo No: ${numPedido}`, 20, 20);
+    doc.text(`Fecha: ${fecha}  Hora: ${hora}`, 20, 30);
+   // doc.text(`Mesa: 02`, 20, 40);  // Ejemplo de mesa fija
+   // doc.text(`Mesero: Nombre del Mesero`, 20, 50);
+  
+    // Encabezado de tabla de productos
+    doc.text("PRODUCTO", 20, 60);
+    doc.text("CANT", 100, 60);
+    doc.text("P.UNI", 120, 60);
+    doc.text("TOTAL", 160, 60);
+  
+    // Líneas de separación
+    doc.line(20, 62, 190, 62);
+  
+    // Listado de productos
+    let yPosition = 70;
     pedido.forEach((item, index) => {
-      doc.text(`${index + 1}. ${item.nombre} - Bs ${item.precio}`, 20, 70 + index * 10);
+      doc.text(item.nombre, 20, yPosition);
+      doc.text("1", 100, yPosition);  // Asumiendo cantidad fija de 1
+      doc.text(`Bs ${item.precio.toFixed(2)}`, 120, yPosition);
+      doc.text(`Bs ${item.precio.toFixed(2)}`, 160, yPosition);
+      yPosition += 10;
     });
-    doc.text(`Total: Bs ${totalConServicio}`, 20, 80 + pedido.length * 10);
-    doc.save(`Recibo_Pedido_${numPedido}.pdf`);
+  
+    // Líneas de separación antes del total
+    doc.line(20, yPosition, 190, yPosition);
+    yPosition += 10;
+  
+    // Total a pagar
+    doc.setFontSize(12);
+    doc.text(`TOTAL A PAGAR => Bs ${totalConServicio.toFixed(2)}`, 20, yPosition);
+    yPosition += 10;
+    //doc.text("No incluye Ser.Voluntario", 20, yPosition);
+    
+    yPosition += 10;
+   // doc.text(`Numero de Personas atendidas: 1`, 20, yPosition);  // Ejemplo de personas atendidas
+  
+    // Pie de página
+    yPosition += 20;
+    doc.setFontSize(8);
+    doc.text("Software: SIKU", 105, yPosition, null, null, "center");
+    doc.text("Desarrollado por Chakuy.", 105, yPosition + 10, null, null, "center");
+  
+    // Abrir el PDF en una nueva pestaña para vista previa e impresión
+    window.open(doc.output("bloburl"), "_blank");
   };
 
   const handleShow = () => {
@@ -244,7 +284,7 @@ const ResumenOrden = ({ pedido, cancelarPedido }) => {
             Cerrar
           </Button>
           <Button variant="primary" onClick={handleGeneratePDF}>
-            Descargar Recibo
+            Ver/Imprimir Recibo
           </Button>
         </Modal.Footer>
       </Modal>
