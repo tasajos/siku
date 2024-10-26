@@ -29,7 +29,7 @@ const AdministracionClientes = () => {
           <FontAwesomeIcon icon={faUserEdit} className="admin-icon" />
           <h3>Modificar Cliente</h3>
           <p>Actualiza la información de los clientes y ajusta sus datos según sea necesario.</p>
-          <Link to="/modificar-cliente">
+          <Link to="/mod-clientes">
             <button className="admin-button">Modificar Cliente</button>
           </Link>
         </div>
