@@ -61,7 +61,9 @@ const PaginaPedido = () => {
                 <ul>
                   {pedido.menu && pedido.menu.map((item, itemIndex) => (
                     <li key={itemIndex}>
-                      <img src={item.imagen} alt={item.nombre} width="50" height="50" style={{ marginRight: '10px' }} />
+                      {/* <img src={item.imagen} alt={item.nombre} width="50" height="50" style={{ marginRight: '10px' }} />
+                       */}
+                       
                       {item.nombre} 
                     </li>
                   ))}
@@ -113,7 +115,7 @@ const PaginaPedido = () => {
                 <ul>
                   {pedido.menu && pedido.menu.map((item, itemIndex) => (
                     <li key={itemIndex}>
-                      <img src={item.imagen} alt={item.nombre} width="50" height="50" style={{ marginRight: '10px' }} />
+                      
                       {item.nombre} 
                     </li>
                   ))}
@@ -159,7 +161,7 @@ const PaginaPedido = () => {
                 <ul>
                   {pedido.menu && pedido.menu.map((item, itemIndex) => (
                     <li key={itemIndex}>
-                      <img src={item.imagen} alt={item.nombre} width="50" height="50" style={{ marginRight: '10px' }} />
+                      
                       {item.nombre} 
                     </li>
                   ))}
