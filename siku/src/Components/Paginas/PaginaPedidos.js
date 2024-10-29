@@ -43,10 +43,23 @@ const PaginaPedido = () => {
       .catch((error) => console.error('Error al actualizar el estado del pedido: ', error));
   };
 
+  // Función para agrupar productos por nombre en el menú
+  const agruparProductos = (menu) => {
+    const productosAgrupados = menu.reduce((acc, item) => {
+      const existingItem = acc.find((prod) => prod.nombre === item.nombre);
+      if (existingItem) {
+        existingItem.cantidad += 1;
+      } else {
+        acc.push({ ...item, cantidad: 1 });
+      }
+      return acc;
+    }, []);
+    return productosAgrupados;
+  };
+
   return (
     <div className="pedidos-container">
       <h2>Pedidos Pendientes</h2>
-      <br />
       <div className="cards-container">
         {pedidosPendientes.length > 0 ? (
           pedidosPendientes.map((pedido, index) => (
@@ -56,15 +69,12 @@ const PaginaPedido = () => {
                 <Card.Text>Estado: {pedido.estado}</Card.Text>
                 <Card.Text>Hora: {pedido.hora}</Card.Text>
 
-                {/* Detalle del menú */}
+                {/* Detalle del menú agrupado */}
                 <Card.Text><strong>Menú:</strong></Card.Text>
-                <ul>
-                  {pedido.menu && pedido.menu.map((item, itemIndex) => (
+                <ul className="menu-list">
+                  {pedido.menu && agruparProductos(pedido.menu).map((item, itemIndex) => (
                     <li key={itemIndex}>
-                      {/* <img src={item.imagen} alt={item.nombre} width="50" height="50" style={{ marginRight: '10px' }} />
-                       */}
-                       
-                      {item.nombre} 
+                      {item.nombre} x {item.cantidad}
                     </li>
                   ))}
                 </ul>
@@ -97,10 +107,9 @@ const PaginaPedido = () => {
           <p>No hay pedidos pendientes.</p>
         )}
       </div>
-<br></br>
+
       {/* Sección para los pedidos en estado "Trabajando" */}
       <h2>Pedidos Trabajando</h2>
-      <br />
       <div className="cards-container">
         {pedidosTrabajando.length > 0 ? (
           pedidosTrabajando.map((pedido, index) => (
@@ -110,13 +119,12 @@ const PaginaPedido = () => {
                 <Card.Text>Estado: {pedido.estado}</Card.Text>
                 <Card.Text>Hora: {pedido.hora}</Card.Text>
 
-                {/* Detalle del menú */}
+                {/* Detalle del menú agrupado */}
                 <Card.Text><strong>Menú:</strong></Card.Text>
-                <ul>
-                  {pedido.menu && pedido.menu.map((item, itemIndex) => (
+                <ul className="menu-list">
+                  {pedido.menu && agruparProductos(pedido.menu).map((item, itemIndex) => (
                     <li key={itemIndex}>
-                      
-                      {item.nombre} 
+                      {item.nombre} x {item.cantidad}
                     </li>
                   ))}
                 </ul>
@@ -143,10 +151,9 @@ const PaginaPedido = () => {
           <p>No hay pedidos en estado "Trabajando".</p>
         )}
       </div>
-<br></br>
+
       {/* Sección para los pedidos en estado "Cancelado" */}
       <h2>Pedidos Cancelados</h2>
-      <br />
       <div className="cards-container">
         {pedidosCancelados.length > 0 ? (
           pedidosCancelados.map((pedido, index) => (
@@ -156,13 +163,12 @@ const PaginaPedido = () => {
                 <Card.Text>Estado: {pedido.estado}</Card.Text>
                 <Card.Text>Hora: {pedido.hora}</Card.Text>
 
-                {/* Detalle del menú */}
+                {/* Detalle del menú agrupado */}
                 <Card.Text><strong>Menú:</strong></Card.Text>
-                <ul>
-                  {pedido.menu && pedido.menu.map((item, itemIndex) => (
+                <ul className="menu-list">
+                  {pedido.menu && agruparProductos(pedido.menu).map((item, itemIndex) => (
                     <li key={itemIndex}>
-                      
-                      {item.nombre} 
+                      {item.nombre} x {item.cantidad}
                     </li>
                   ))}
                 </ul>
