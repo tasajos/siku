@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { database } from '../../../firebase'; // Asegúrate de importar correctamente Firebase
-import { ref, onValue, set } from 'firebase/database';
+import { database } from '../../../firebase';
+import { ref, onValue, set, update } from 'firebase/database';
 import './Caja.css';
 
 const Caja = () => {
@@ -41,6 +41,7 @@ const Caja = () => {
 
       set(cajaRef, nuevaCaja)
         .then(() => {
+          update(ref(database, 'cajas/aperturaActiva'), { activa: true, monto: monto });
           setMensaje('Caja aperturada con éxito.');
           setCajaAperturada(true);
         })

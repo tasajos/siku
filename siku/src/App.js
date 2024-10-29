@@ -18,6 +18,11 @@ import Modusuarios from './Components/Configuracion/AdmUsuarios/ModificarUsuario
 
 /////ADM clientes
 import Admclientes from './Components/Configuracion/AdmClientes/AdministracionClientes';
+import AdClientes from './Components/Configuracion/AdmClientes/addcliente';
+import ModClientes from './Components/Configuracion/AdmClientes/ModificarCliente';
+import ListClientes from './Components/Configuracion/AdmClientes/ListadoClientes';
+
+
 /////ADM caja
 import Admccajas from './Components/Configuracion/AdmCaja/AdministracionCaja';
 import Cajas from './Components/Configuracion/AdmCaja/Caja';
@@ -75,6 +80,9 @@ function App() {
               <Route path="/list-usuario" element={<Listusuarios />} />
               <Route path="/mod-usuario" element={<Modusuarios />} />
               <Route path="/adm-clientes" element={<Admclientes />} />
+              <Route path="/add-clientes" element={<AdClientes />} />
+              <Route path="/mod-clientes" element={<ModClientes />} />
+              <Route path="/list-clientes" element={<ListClientes />} />
               <Route path="/cajas" element={<Cajas />} />
               <Route path="/cierrecajas" element={<CierreCajas />} />
               <Route path="/listacierrecajas" element={<ListaCierreCajas />} />

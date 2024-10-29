@@ -13,7 +13,7 @@ const AdministracionClientes = () => {
           <FontAwesomeIcon icon={faUsers} className="admin-icon" />
           <h3>Lista de Clientes</h3>
           <p>Consulta y visualiza la lista de todos los clientes registrados.</p>
-          <Link to="/lista-clientes">
+          <Link to="/list-clientes">
             <button className="admin-button">Ver Lista</button>
           </Link>
         </div>
@@ -21,7 +21,7 @@ const AdministracionClientes = () => {
           <FontAwesomeIcon icon={faUserPlus} className="admin-icon" />
           <h3>Añadir Cliente</h3>
           <p>Agrega nuevos clientes con sus datos de contacto y detalles relevantes.</p>
-          <Link to="/añadir-cliente">
+          <Link to="/add-clientes">
             <button className="admin-button">Añadir Cliente</button>
           </Link>
         </div>
@@ -29,7 +29,7 @@ const AdministracionClientes = () => {
           <FontAwesomeIcon icon={faUserEdit} className="admin-icon" />
           <h3>Modificar Cliente</h3>
           <p>Actualiza la información de los clientes y ajusta sus datos según sea necesario.</p>
-          <Link to="/modificar-cliente">
+          <Link to="/mod-clientes">
             <button className="admin-button">Modificar Cliente</button>
           </Link>
         </div>

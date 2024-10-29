@@ -1,7 +1,7 @@
 .barra-lateral {
     width: 250px;
     height: 100vh;
-    background-color: #d32f2f; /* Rojo estilo Burger King */
+    background-color: #d32f2f;
     position: fixed;
     top: 0;
     left: 0;
@@ -35,7 +35,7 @@
   }
   
   .barra-lateral .nav-link:hover {
-    background-color: #c1272d; /* Un tono más oscuro al hacer hover */
+    background-color: #c1272d;
     border-radius: 10px;
     text-decoration: none;
   }
@@ -49,6 +49,37 @@
   }
   
   .barra-lateral .logo-img {
-    border-radius: 30%; /* Hacer el logo redondo */
+    border-radius: 30%;
     margin-bottom: 5px;
   }
+  
+  .submenu {
+    margin-top: 0.5rem;
+    margin-left: 1.5rem;
+    list-style: none;
+    padding-left: 0;
+  }
+  
+  .submenu-link {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    color: #ddd;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s;
+  }
+  
+  .submenu-link .mr-2 {
+    margin-right: 10px;
+  }
+  
+  .submenu-link:hover {
+    color: #fff;
+  }
+  
+  .rotate-icon {
+    transform: rotate(180deg);
+    transition: transform 0.3s;
+  }
+  
