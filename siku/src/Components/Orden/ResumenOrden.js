@@ -56,6 +56,19 @@ const ResumenOrden = ({ pedido, cancelarPedido }) => {
     }
   };
 
+  // Agrupar pedidos por producto
+const groupedPedido = pedido.reduce((acc, item) => {
+  const found = acc.find(i => i.nombre === item.nombre);
+  if (found) {
+    found.cantidad += 1;
+    found.subtotal += item.precio;
+  } else {
+    acc.push({ ...item, cantidad: 1, subtotal: item.precio });
+  }
+  return acc;
+}, []);
+
+
   const handleClose = () => {
     setShowModal(false);
     setBillete(0); 
@@ -122,16 +135,16 @@ const ResumenOrden = ({ pedido, cancelarPedido }) => {
     <div className="resumen-orden">
       <h2>Resumen de Orden</h2>
       <ul>
-        {pedido.map((item, index) => (
+        {groupedPedido.map((item, index) => (
           <li key={index}>
-            {item.nombre} - Bs {item.precio}
+            {item.nombre} - Cantidad: {item.cantidad} - Subtotal: Bs {item.subtotal.toFixed(2)}
           </li>
         ))}
       </ul>
       <div>Subtotal: Bs {total}</div>
       <div>Total con servicio: Bs {totalConServicio}</div>
       <br />
-
+  
       <div className="botones-orden" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '10px' }}>
         <Button 
           variant="success" 
@@ -140,7 +153,7 @@ const ResumenOrden = ({ pedido, cancelarPedido }) => {
         >
           Pagar
         </Button>
-
+  
         <FontAwesomeIcon 
           icon={faTrash} 
           onClick={cancelarPedido} 
@@ -149,7 +162,7 @@ const ResumenOrden = ({ pedido, cancelarPedido }) => {
           style={{ cursor: 'pointer', color: '#d9534f' }} 
         />
       </div>
-
+  
       <Modal show={showModal} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Total a Pagar</Modal.Title>
