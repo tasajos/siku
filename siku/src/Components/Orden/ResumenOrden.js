@@ -164,28 +164,8 @@ const groupedPedido = pedido.reduce((acc, item) => {
     setHora(fechaActual.toLocaleTimeString('es-BO', opciones));
   };
 
-  const registrarPedido = () => {
-    const pedidoRef = ref(database, `pedidos/${numPedido}`);
-    const nuevoPedido = {
-      numeroPedido: numPedido,
-      estado: "Pendiente",
-      total: totalConServicio,
-      menu: pedido,
-      cambio: cambio,
-      hora,
-      fecha
-    };
-
-    set(pedidoRef, nuevoPedido)
-      .then(() => {
-        alert('Pedido registrado con éxito');
-        setShowReciboModal(true);
-        handleClose();
-      })
-      .catch((error) => {
-        console.error('Error al registrar el pedido: ', error);
-      });
-  };
+  
+   
 
   const obtenerUltimoNumeroPedido = () => {
     const pedidosRef = ref(database, 'pedidos');
@@ -194,13 +174,39 @@ const groupedPedido = pedido.reduce((acc, item) => {
       if (data) {
         const keys = Object.keys(data);
         const ultimoNumero = Math.max(...keys.map(key => parseInt(key)));
-        setNumPedido(ultimoNumero + 1);
+        setNumPedido(ultimoNumero); // Asignamos el último número sin incremento
       } else {
         setNumPedido(1);
       }
     });
     obtenerFechaYHora();
   };
+  
+  const registrarPedido = () => {
+    const pedidoRef = ref(database, `pedidos/${numPedido + 1}`); // Incrementamos aquí el número para el registro
+    const nuevoPedido = {
+      numeroPedido: numPedido + 1, // Usamos numPedido + 1 al registrar en la base de datos
+      estado: "Pendiente",
+      total: totalConServicio,
+      menu: pedido,
+      cambio: cambio,
+      hora,
+      fecha
+    };
+  
+    set(pedidoRef, nuevoPedido)
+      .then(() => {
+        alert('Pedido registrado con éxito');
+        setNumPedido(numPedido + 1); // Actualizamos numPedido en el estado después de registrar
+        setShowReciboModal(true);
+        handleClose();
+      })
+      .catch((error) => {
+        console.error('Error al registrar el pedido: ', error);
+      });
+  };
+  
+  
 
   const getMensajeCaja = () => {
     if (cajaEstado === 'cerrada') return 'Caja Cerrada';
