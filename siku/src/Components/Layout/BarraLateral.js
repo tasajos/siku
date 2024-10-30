@@ -136,9 +136,9 @@ const BarraLateral = () => {
           </button>
         </li>
       </ul>
-      <div className="system-version text-center mt-4">
-        <p>Versión del sistema: {systemVersion}</p>
-      </div>
+      <li style={{ color: 'white', textAlign: 'center', fontSize: '0.8em', marginTop: '10px' }}>
+  Versión: {systemVersion}
+</li>
     </aside>
   );
 };
