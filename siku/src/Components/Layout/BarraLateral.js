@@ -6,7 +6,7 @@ import {
   faHamburger, faPizzaSlice
 } from '@fortawesome/free-solid-svg-icons';
 import { getAuth, signOut } from 'firebase/auth';
-import { database } from '../../firebase'; // Firebase para obtener datos del usuario
+import { database } from '../../firebase';
 import { ref, onValue } from 'firebase/database';
 import './BarraLateral.css';
 import logo from '../../assets/logo_cha.png';
@@ -14,6 +14,7 @@ import logo from '../../assets/logo_cha.png';
 const BarraLateral = () => {
   const [submenuVisible, setSubmenuVisible] = useState(false);
   const [userRole, setUserRole] = useState('');
+  const [systemVersion, setSystemVersion] = useState('1.0.0'); // Default version
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -21,12 +22,19 @@ const BarraLateral = () => {
     const user = auth.currentUser;
 
     if (user) {
-      const userRoleRef = ref(database, `usuarios/${user.uid}/rol`); // Cambiado a 'usuarios'
+      const userRoleRef = ref(database, `usuarios/${user.uid}/rol`);
       onValue(userRoleRef, (snapshot) => {
         const role = snapshot.val();
         setUserRole(role);
       });
     }
+
+    // Fetch the system version from the database if available
+    const versionRef = ref(database, 'config/version'); // Assuming the version is stored in this path
+    onValue(versionRef, (snapshot) => {
+      const version = snapshot.val();
+      if (version) setSystemVersion(version);
+    });
   }, []);
 
   const handleLogout = () => {
@@ -110,16 +118,10 @@ const BarraLateral = () => {
                     Nuevo Producto
                   </Link>
                 </li>
-                {/*<li>
-                  <Link to="/nueva-categoria" className="submenu-link">
-                    <FontAwesomeIcon icon={faPizzaSlice} className="mr-2" />
-                    Nueva Categoría
-                  </Link>
-                </li>*/}
                 <li>
                   <Link to="/listar-menu" className="submenu-link">
                     <FontAwesomeIcon icon={faPizzaSlice} className="mr-2" />
-                    Edicion Menu
+                    Edición Menú
                   </Link>
                 </li>
               </ul>
@@ -134,6 +136,9 @@ const BarraLateral = () => {
           </button>
         </li>
       </ul>
+      <div className="system-version text-center mt-4">
+        <p>Versión del sistema: {systemVersion}</p>
+      </div>
     </aside>
   );
 };
