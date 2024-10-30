@@ -110,12 +110,12 @@ const BarraLateral = () => {
                     Nuevo Producto
                   </Link>
                 </li>
-                <li>
+                {/*<li>
                   <Link to="/nueva-categoria" className="submenu-link">
                     <FontAwesomeIcon icon={faPizzaSlice} className="mr-2" />
                     Nueva Categoría
                   </Link>
-                </li>
+                </li>*/}
                 <li>
                   <Link to="/listar-menu" className="submenu-link">
                     <FontAwesomeIcon icon={faPizzaSlice} className="mr-2" />
