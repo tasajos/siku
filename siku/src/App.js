@@ -29,6 +29,10 @@ import Cajas from './Components/Configuracion/AdmCaja/Caja';
 import CierreCajas from './Components/Configuracion/AdmCaja/CierreCaja';
 import ListaCierreCajas from './Components/Configuracion/AdmCaja/ListaCierresCaja';
 
+//// ADM MENU
+import ListaMenu from './Components/Menu/ListarMenu';
+
+
 import './App.css';
 
 function App() {
@@ -74,6 +78,7 @@ function App() {
               <Route path="/pedidos" element={<PaginaPedido />} />
               <Route path="/pagos" element={<Pagos />} />
               <Route path="/agregar-menu" element={<AgregarMenu />} />
+              <Route path="/listar-menu" element={<ListaMenu />} />
               <Route path="/configuracion" element={<PaginaConfiguracion />} />
               <Route path="/adm-usuario" element={<Admusuarios />} />
               <Route path="/add-usuario" element={<Addusuarios />} />

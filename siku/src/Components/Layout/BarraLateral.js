@@ -116,6 +116,12 @@ const BarraLateral = () => {
                     Nueva Categoría
                   </Link>
                 </li>
+                <li>
+                  <Link to="/listar-menu" className="submenu-link">
+                    <FontAwesomeIcon icon={faPizzaSlice} className="mr-2" />
+                    Edicion Menu
+                  </Link>
+                </li>
               </ul>
             )}
           </li>

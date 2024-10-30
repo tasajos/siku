@@ -1,0 +1,27 @@
+.listar-menu-container {
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .productos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+  }
+  
+  .producto-card {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .producto-imagen {
+    height: 150px;
+    object-fit: cover;
+  }
+  
+  .precio-group,
+  .estado-group {
+    margin-bottom: 15px;
+  }
+  
