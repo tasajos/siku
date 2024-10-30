@@ -6,6 +6,7 @@ import { database } from '../../firebase';
 import { ref, onValue, set } from 'firebase/database';
 import Recibo from './Recibo';
 import jsPDF from 'jspdf';
+import './ResumenOrden.css';
 
 const ResumenOrden = ({ pedido, cancelarPedido }) => {
   const [showModal, setShowModal] = useState(false);
@@ -16,8 +17,9 @@ const ResumenOrden = ({ pedido, cancelarPedido }) => {
   const [numPedido, setNumPedido] = useState(0);
   const [fecha, setFecha] = useState('');
   const [hora, setHora] = useState('');
-  const [cajaEstado, setCajaEstado] = useState(''); // 'activa', 'cerrada', 'no_apertura'
+  const [cajaEstado, setCajaEstado] = useState(''); 
   const [montoApertura, setMontoApertura] = useState(0);
+  const [modoEntrega, setModoEntrega] = useState('');
 
   useEffect(() => {
     const obtenerFechaActual = () => {
@@ -53,13 +55,12 @@ const ResumenOrden = ({ pedido, cancelarPedido }) => {
     const doc = new jsPDF({
       orientation: 'portrait',
       unit: 'pt',
-      format: [226, 600], // Tamaño de recibo ajustado
+      format: [226, 600],
     });
   
     doc.setFont("courier", "normal");
     doc.setFontSize(10);
   
-    // Agrupar productos por nombre
     const productosAgrupados = {};
     pedido.forEach((item) => {
       if (productosAgrupados[item.nombre]) {
@@ -75,23 +76,19 @@ const ResumenOrden = ({ pedido, cancelarPedido }) => {
       }
     });
   
-    // Encabezado del recibo
     doc.text("PRINCIPAL", 113, 20, null, null, "center");
     doc.setFontSize(8);
     doc.text(`Recibo No: ${numPedido}`, 10, 40);
     doc.text(`Fecha: ${fecha}`, 10, 50);
     doc.text(`Hora: ${hora}`, 10, 60);
   
-    // Encabezado de productos
     doc.text("PRODUCTO", 10, 80);
     doc.text("CANT", 90, 80);
     doc.text("P.UNI", 130, 80);
     doc.text("TOTAL", 180, 80);
   
-    // Línea de separación
     doc.line(10, 85, 216, 85);
   
-    // Detalle de productos agrupados
     let yPosition = 95;
     Object.values(productosAgrupados).forEach((item) => {
       doc.text(item.nombre, 10, yPosition);
@@ -101,22 +98,18 @@ const ResumenOrden = ({ pedido, cancelarPedido }) => {
       yPosition += 10;
     });
   
-    // Línea de separación antes del total
     doc.line(10, yPosition, 216, yPosition);
     yPosition += 10;
   
-    // Total a pagar
     doc.setFontSize(10);
     doc.text(`TOTAL A PAGAR: Bs ${totalConServicio.toFixed(2)}`, 10, yPosition);
     yPosition += 15;
   
-    // Pie de página con detalles del software
     yPosition += 20;
     doc.setFontSize(6);
     doc.text("Software: SIKU", 113, yPosition, null, null, "center");
     doc.text("Desarrollado por Chakuy", 113, yPosition + 10, null, null, "center");
   
-    // Abrir el PDF en una nueva pestaña para vista previa e impresión
     window.open(doc.output("bloburl"), "_blank");
   };
 
@@ -129,23 +122,22 @@ const ResumenOrden = ({ pedido, cancelarPedido }) => {
     }
   };
 
-  // Agrupar pedidos por producto
-const groupedPedido = pedido.reduce((acc, item) => {
-  const found = acc.find(i => i.nombre === item.nombre);
-  if (found) {
-    found.cantidad += 1;
-    found.subtotal += item.precio;
-  } else {
-    acc.push({ ...item, cantidad: 1, subtotal: item.precio });
-  }
-  return acc;
-}, []);
-
+  const groupedPedido = pedido.reduce((acc, item) => {
+    const found = acc.find(i => i.nombre === item.nombre);
+    if (found) {
+      found.cantidad += 1;
+      found.subtotal += item.precio;
+    } else {
+      acc.push({ ...item, cantidad: 1, subtotal: item.precio });
+    }
+    return acc;
+  }, []);
 
   const handleClose = () => {
     setShowModal(false);
     setBillete(0);
     setCambio(0);
+    setModoEntrega('');
   };
 
   const handleReciboClose = () => setShowReciboModal(false);
@@ -164,9 +156,6 @@ const groupedPedido = pedido.reduce((acc, item) => {
     setHora(fechaActual.toLocaleTimeString('es-BO', opciones));
   };
 
-  
-   
-
   const obtenerUltimoNumeroPedido = () => {
     const pedidosRef = ref(database, 'pedidos');
     onValue(pedidosRef, (snapshot) => {
@@ -174,7 +163,7 @@ const groupedPedido = pedido.reduce((acc, item) => {
       if (data) {
         const keys = Object.keys(data);
         const ultimoNumero = Math.max(...keys.map(key => parseInt(key)));
-        setNumPedido(ultimoNumero); // Asignamos el último número sin incremento
+        setNumPedido(ultimoNumero);
       } else {
         setNumPedido(1);
       }
@@ -183,21 +172,27 @@ const groupedPedido = pedido.reduce((acc, item) => {
   };
   
   const registrarPedido = () => {
-    const pedidoRef = ref(database, `pedidos/${numPedido + 1}`); // Incrementamos aquí el número para el registro
+    if (!modoEntrega) {
+      alert('Por favor, seleccione un modo de entrega.');
+      return;
+    }
+
+    const pedidoRef = ref(database, `pedidos/${numPedido + 1}`);
     const nuevoPedido = {
-      numeroPedido: numPedido + 1, // Usamos numPedido + 1 al registrar en la base de datos
+      numeroPedido: numPedido + 1,
       estado: "Pendiente",
       total: totalConServicio,
       menu: pedido,
       cambio: cambio,
       hora,
-      fecha
+      fecha,
+      modoEntrega
     };
   
     set(pedidoRef, nuevoPedido)
       .then(() => {
         alert('Pedido registrado con éxito');
-        setNumPedido(numPedido + 1); // Actualizamos numPedido en el estado después de registrar
+        setNumPedido(numPedido + 1);
         setShowReciboModal(true);
         handleClose();
       })
@@ -205,8 +200,6 @@ const groupedPedido = pedido.reduce((acc, item) => {
         console.error('Error al registrar el pedido: ', error);
       });
   };
-  
-  
 
   const getMensajeCaja = () => {
     if (cajaEstado === 'cerrada') return 'Caja Cerrada';
@@ -236,7 +229,7 @@ const groupedPedido = pedido.reduce((acc, item) => {
         <Button 
           variant="success" 
           onClick={handleShow}
-          disabled={cajaEstado !== 'activa'} // Deshabilitar si la caja no está activa
+          disabled={cajaEstado !== 'activa'}
         >
           Pagar
         </Button>
@@ -259,6 +252,17 @@ const groupedPedido = pedido.reduce((acc, item) => {
           <p>Total con servicio: Bs {totalConServicio}</p>
 
           <Form.Group>
+            <Form.Label>Modo de Entrega</Form.Label>
+            <Form.Select value={modoEntrega} onChange={(e) => setModoEntrega(e.target.value)}>
+              <option value="">Seleccione una opción</option>
+              <option value="En sala">En Sala</option>
+              <option value="Para Llevar">Para Llevar</option>
+              <option value="Delivery">Delivery</option>
+            </Form.Select>
+          </Form.Group>
+
+          <Form.Group>
+            
             <Form.Label>Monto a Pagar (Bs):</Form.Label>
             <Form.Control
               type="number"
@@ -269,7 +273,7 @@ const groupedPedido = pedido.reduce((acc, item) => {
             />
           </Form.Group>
 
-          <p>Cambio: Bs {cambio}</p>
+          <p className="cambio-texto">Cambio: Bs {cambio}</p>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
@@ -278,7 +282,7 @@ const groupedPedido = pedido.reduce((acc, item) => {
           <Button 
             variant="primary" 
             onClick={registrarPedido} 
-            disabled={billete < totalConServicio}
+            disabled={!billete || billete < totalConServicio || !modoEntrega}
           >
             Confirmar Pago
           </Button>
@@ -310,6 +314,7 @@ const groupedPedido = pedido.reduce((acc, item) => {
             numPedido={numPedido}
             fecha={fecha}
             hora={hora}
+            modoEntrega={modoEntrega}
           />
         </Modal.Body>
         <Modal.Footer>

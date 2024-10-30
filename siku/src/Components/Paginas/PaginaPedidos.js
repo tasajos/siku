@@ -67,6 +67,7 @@ const PaginaPedido = () => {
               <Card.Body>
                 <Card.Title>Pedido #{pedido.numeroPedido}</Card.Title>
                 <Card.Text>Estado: {pedido.estado}</Card.Text>
+                <Card.Text>Modo Entrega: {pedido.modoEntrega}</Card.Text>
                 <Card.Text>Hora: {pedido.hora}</Card.Text>
 
                 {/* Detalle del menú agrupado */}
