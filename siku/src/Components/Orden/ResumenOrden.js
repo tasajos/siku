@@ -17,9 +17,10 @@ const ResumenOrden = ({ pedido, cancelarPedido }) => {
   const [numPedido, setNumPedido] = useState(0);
   const [fecha, setFecha] = useState('');
   const [hora, setHora] = useState('');
-  const [cajaEstado, setCajaEstado] = useState(''); 
+  const [cajaEstado, setCajaEstado] = useState('');
   const [montoApertura, setMontoApertura] = useState(0);
   const [modoEntrega, setModoEntrega] = useState('');
+  const [clienteCnombre, setClienteCnombre] = useState(''); // Para el nombre del cliente
 
   useEffect(() => {
     const obtenerFechaActual = () => {
@@ -46,6 +47,13 @@ const ResumenOrden = ({ pedido, cancelarPedido }) => {
         setCajaEstado('no_apertura');
       }
     });
+
+    // Cargar el nombre del cliente desde Firebase
+    const clienteRef = ref(database, 'config/cliente/cnombre');
+    onValue(clienteRef, (snapshot) => {
+      const cnombre = snapshot.val();
+      setClienteCnombre(cnombre);
+    });
   }, []);
 
   const total = pedido.reduce((acc, item) => acc + item.precio, 0);
@@ -57,10 +65,10 @@ const ResumenOrden = ({ pedido, cancelarPedido }) => {
       unit: 'pt',
       format: [226, 600],
     });
-  
+
     doc.setFont("courier", "normal");
     doc.setFontSize(10);
-  
+
     const productosAgrupados = {};
     pedido.forEach((item) => {
       if (productosAgrupados[item.nombre]) {
@@ -75,20 +83,21 @@ const ResumenOrden = ({ pedido, cancelarPedido }) => {
         };
       }
     });
-  
-    doc.text("PRINCIPAL", 113, 20, null, null, "center");
+
+    // Usar el nombre del cliente en lugar de "PRINCIPAL"
+    doc.text(clienteCnombre || "PRINCIPAL", 113, 20, null, null, "center");
     doc.setFontSize(8);
     doc.text(`Recibo No: ${numPedido}`, 10, 40);
     doc.text(`Fecha: ${fecha}`, 10, 50);
     doc.text(`Hora: ${hora}`, 10, 60);
-  
+
     doc.text("PRODUCTO", 10, 80);
     doc.text("CANT", 90, 80);
     doc.text("P.UNI", 130, 80);
     doc.text("TOTAL", 180, 80);
-  
+
     doc.line(10, 85, 216, 85);
-  
+
     let yPosition = 95;
     Object.values(productosAgrupados).forEach((item) => {
       doc.text(item.nombre, 10, yPosition);
@@ -97,19 +106,19 @@ const ResumenOrden = ({ pedido, cancelarPedido }) => {
       doc.text(`Bs ${item.total.toFixed(2)}`, 180, yPosition);
       yPosition += 10;
     });
-  
+
     doc.line(10, yPosition, 216, yPosition);
     yPosition += 10;
-  
+
     doc.setFontSize(10);
     doc.text(`TOTAL A PAGAR: Bs ${totalConServicio.toFixed(2)}`, 10, yPosition);
     yPosition += 15;
-  
+
     yPosition += 20;
     doc.setFontSize(6);
     doc.text("Software: SIKU", 113, yPosition, null, null, "center");
     doc.text("Desarrollado por Chakuy", 113, yPosition + 10, null, null, "center");
-  
+
     window.open(doc.output("bloburl"), "_blank");
   };
 
@@ -170,7 +179,7 @@ const ResumenOrden = ({ pedido, cancelarPedido }) => {
     });
     obtenerFechaYHora();
   };
-  
+
   const registrarPedido = () => {
     if (!modoEntrega) {
       alert('Por favor, seleccione un modo de entrega.');
@@ -188,7 +197,7 @@ const ResumenOrden = ({ pedido, cancelarPedido }) => {
       fecha,
       modoEntrega
     };
-  
+
     set(pedidoRef, nuevoPedido)
       .then(() => {
         alert('Pedido registrado con éxito');
@@ -224,7 +233,7 @@ const ResumenOrden = ({ pedido, cancelarPedido }) => {
       <div>Subtotal: Bs {total}</div>
       <div>Total con servicio: Bs {totalConServicio}</div>
       <br />
-  
+
       <div className="botones-orden" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '10px' }}>
         <Button 
           variant="success" 
@@ -233,7 +242,7 @@ const ResumenOrden = ({ pedido, cancelarPedido }) => {
         >
           Pagar
         </Button>
-  
+
         <FontAwesomeIcon 
           icon={faTrash} 
           onClick={cancelarPedido} 
@@ -242,7 +251,7 @@ const ResumenOrden = ({ pedido, cancelarPedido }) => {
           style={{ cursor: 'pointer', color: '#d9534f' }} 
         />
       </div>
-  
+
       <Modal show={showModal} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Total a Pagar</Modal.Title>
@@ -262,7 +271,6 @@ const ResumenOrden = ({ pedido, cancelarPedido }) => {
           </Form.Group>
 
           <Form.Group>
-            
             <Form.Label>Monto a Pagar (Bs):</Form.Label>
             <Form.Control
               type="number"

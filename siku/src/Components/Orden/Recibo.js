@@ -1,3 +1,4 @@
+
 import React, { forwardRef } from 'react';
 
 const Recibo = forwardRef(({ pedido, total, numPedido, fecha, hora }, ref) => (
@@ -18,3 +19,6 @@ const Recibo = forwardRef(({ pedido, total, numPedido, fecha, hora }, ref) => (
 ));
 
 export default Recibo;
+
+
+
