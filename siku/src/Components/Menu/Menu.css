@@ -17,3 +17,98 @@
     }
   }
   
+/* Estilo para el selector de vista */
+.vista-selector {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.vista-selector label {
+  font-weight: bold;
+}
+
+
+/* Diseño de la cuadrícula de productos */
+.menu-tarjetas {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  padding: 20px;
+}
+
+@media (max-width: 1024px) {
+  .menu-tarjetas {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .menu-tarjetas {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Estilo para la vista en lista */
+.menu-lista {
+  list-style-type: none;
+  padding: 0;
+}
+
+.producto-lista-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.producto-lista-item:hover {
+  background-color: #f8f8f8;
+}
+
+.producto-lista-info {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Tarjeta de producto */
+.producto-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  text-align: center;
+  transition: box-shadow 0.3s;
+  cursor: pointer;
+}
+
+.producto-card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.producto-imagen {
+  width: 100%;
+  max-width: 150px;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+.producto-info {
+  font-size: 14px;
+}
+
+.producto-nombre {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.producto-categoria, .producto-precio {
+  color: #555;
+}
