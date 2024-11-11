@@ -6,17 +6,14 @@ import './Menu.css';
 
 const Menu = ({ agregarAlPedido, filtro }) => {
   const [productos, setProductos] = useState([]);
-  const [vista, setVista] = useState('tarjetas'); // Estado para la vista seleccionada
+  const [vista, setVista] = useState('tarjetas');
 
   useEffect(() => {
     const productosRef = ref(database, 'productos/');
     onValue(productosRef, (snapshot) => {
       const data = snapshot.val();
       const listaProductos = data ? Object.values(data) : [];
-      
-      // Filtrar productos que están disponibles
-      const productosDisponibles = listaProductos.filter(producto => producto.disponible === true);
-      
+      const productosDisponibles = listaProductos.filter((producto) => producto.disponible === true);
       setProductos(productosDisponibles);
     });
   }, []);
@@ -25,6 +22,14 @@ const Menu = ({ agregarAlPedido, filtro }) => {
   const productosFiltrados = productos.filter((producto) =>
     producto.nombre.toLowerCase().includes(filtro.toLowerCase())
   );
+
+  // Agrupar productos por categoría
+  const productosPorCategoria = productosFiltrados.reduce((acc, producto) => {
+    const { categoria } = producto;
+    if (!acc[categoria]) acc[categoria] = [];
+    acc[categoria].push(producto);
+    return acc;
+  }, {});
 
   return (
     <div>
@@ -58,17 +63,23 @@ const Menu = ({ agregarAlPedido, filtro }) => {
           ))}
         </div>
       ) : (
-        <ul className="menu-lista">
-          {productosFiltrados.map((producto, index) => (
-            <li key={index} className="producto-lista-item" onClick={() => agregarAlPedido(producto)}>
-              <div className="producto-lista-info">
-                <h3 className="producto-nombre">{producto.nombre}</h3>
-                <p className="producto-categoria">Categoría: {producto.categoria}</p>
-                <p className="producto-precio">Precio: Bs {producto.precio}</p>
-              </div>
-            </li>
+        <div className="menu-lista-columnas">
+          {Object.keys(productosPorCategoria).map((categoria) => (
+            <div key={categoria} className="categoria-columna">
+              <h3 className="categoria-titulo">{categoria}</h3>
+              <ul className="producto-lista">
+                {productosPorCategoria[categoria].map((producto, index) => (
+                  <li key={index} className="producto-lista-item" onClick={() => agregarAlPedido(producto)}>
+                    <div className="producto-lista-info">
+                      <h4 className="producto-nombre">{producto.nombre}</h4>
+                      <p className="producto-precio">Precio: Bs {producto.precio}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
           ))}
-        </ul>
+        </div>
       )}
     </div>
   );
