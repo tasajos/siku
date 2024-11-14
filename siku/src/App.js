@@ -32,6 +32,10 @@ import ListaCierreCajas from './Components/Configuracion/AdmCaja/ListaCierresCaj
 //// ADM MENU
 import ListaMenu from './Components/Menu/ListarMenu';
 
+// Pantalla Pedidos
+import PantallaPedidos from './Components/Paginas/PantallaPedidos';
+
+
 
 import './App.css';
 
@@ -91,6 +95,7 @@ function App() {
               <Route path="/cajas" element={<Cajas />} />
               <Route path="/cierrecajas" element={<CierreCajas />} />
               <Route path="/listacierrecajas" element={<ListaCierreCajas />} />
+              <Route path="/pantpedidos" element={<PantallaPedidos />} />
               <Route path="/adm-caja" element={<Admccajas />} />
               <Route path="/login" element={<Navigate to="/" />} /> {/* Redirigir si ya está autenticado */}
               <Route path="*" element={<Navigate to="/menu" />} /> {/* Redirigir a menú por defecto */}

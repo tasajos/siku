@@ -92,6 +92,10 @@ const BarraLateral = () => {
             <FontAwesomeIcon icon={faClipboardList} className="mr-2" />
             Pedidos
           </Link>
+          <Link to="/pantpedidos" className="nav-link text-light">
+            <FontAwesomeIcon icon={faClipboardList} className="mr-2" />
+            Pantalla Pedidos
+          </Link>
         </li>
 
         {isAdminOrManager && (
