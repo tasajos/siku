@@ -48,6 +48,16 @@ const BarraLateral = () => {
       });
   };
 
+  if (userRole === 'Presentacion') {
+    return (
+      <div className="presentacion-header">
+        <button onClick={handleLogout} className="logout-button">
+          <FontAwesomeIcon icon={faSignOutAlt} />
+        </button>
+      </div>
+    );
+  }
+
   const toggleSubmenu = () => {
     setSubmenuVisible(!submenuVisible);
   };

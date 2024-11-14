@@ -9,6 +9,9 @@ import Encabezado from './Components/Layout/Encabezado';
 import BarraLateral from './Components/Layout/BarraLateral';
 import Login from './Components/Login/Login';
 import { getAuth, onAuthStateChanged } from 'firebase/auth'; // Firebase Authentication
+import { ref, onValue } from 'firebase/database'; // Agregado para manejar la base de datos
+import { database } from './firebase'; // Asegúrate de tener esta importación correctamente configurada
+
 
 /////ADM usuarios
 import Admusuarios from './Components/Configuracion/AdmUsuarios/AdministracionUsuarios';
@@ -42,15 +45,37 @@ import './App.css';
 function App() {
   const [filtro, setFiltro] = useState(''); // Estado del filtro global
   const [user, setUser] = useState(null); // Estado para guardar la autenticación
+  const [userRole, setUserRole] = useState('');
 
   // Verificar autenticación cuando la app se carga
   useEffect(() => {
     const auth = getAuth();
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser); // Guardamos al usuario si está autenticado
+
+
+if (currentUser) {
+        const userRoleRef = ref(database, `usuarios/${currentUser.uid}/rol`);
+        onValue(userRoleRef, (snapshot) => {
+          setUserRole(snapshot.val());
+        });
+      }
     });
-    return () => unsubscribe(); // Limpiamos el efecto cuando el componente se desmonta
+    return () => unsubscribe();
   }, []);
+
+  
+  if (userRole === 'Presentacion') {
+    return (
+      <Router>
+        <Routes>
+          <Route path="/pantpedidos" element={<PantallaPedidos />} />
+          <Route path="*" element={<Navigate to="/pantpedidos" />} />
+        </Routes>
+      </Router>
+    );
+  }
+
 
   // Función para manejar la búsqueda y actualizar el estado del filtro
   const manejarBusqueda = (busqueda) => {

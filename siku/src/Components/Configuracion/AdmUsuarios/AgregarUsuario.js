@@ -130,6 +130,7 @@ const AgregarUsuario = () => {
             <option value="Cajero">Cajero</option>
             <option value="Supervisor">Supervisor</option>
             <option value="Gerente">Gerente</option>
+            <option value="Presentacion">Presentacion</option>
           </select>
         </div>
         <button type="submit" className="agregar-button">Agregar Usuario</button>
