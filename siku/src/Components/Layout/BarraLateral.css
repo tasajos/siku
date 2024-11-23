@@ -101,3 +101,26 @@
   .logout-button:hover {
     color: #ccc;
   }
+
+  /* Estilo para el header en modo presentación */
+.presentacion-header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #ff4500; /* Color similar al tema Burger King */
+}
+
+/* Botón de cerrar sesión */
+.logout-button {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 1.5em;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.logout-button:hover {
+  color: #ffe5b4; /* Color de hover */
+}

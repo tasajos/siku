@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { getAuth, signOut } from 'firebase/auth';
 import { database } from '../../firebase';
 import { ref, onValue } from 'firebase/database';
 import './PantallaPedidos.css';
@@ -22,7 +23,8 @@ const PantallaPedidos = () => {
         // Filtrar los pedidos entregados de hoy
         const pedidosEntregados = Object.values(data)
           .filter(
-            (pedido) => pedido.estado === 'Entregado' && pedido.fecha === `${dia}/${mes}/${año}`
+            (pedido) =>
+              pedido.estado === 'Entregado' && pedido.fecha === `${dia}/${mes}/${año}`
           )
           .slice(-3); // Obtener los últimos tres
         setPedidos(pedidosEntregados);
@@ -30,8 +32,26 @@ const PantallaPedidos = () => {
     });
   }, []);
 
+  const handleLogout = () => {
+    const auth = getAuth();
+    signOut(auth)
+      .then(() => {
+        window.location.href = '/login'; // Redirigir a la página de inicio de sesión
+      })
+      .catch((error) => {
+        console.error('Error al cerrar sesión:', error);
+      });
+  };
+
   return (
     <div className="pantalla-container">
+      {/* Botón para cerrar sesión */}
+      <div className="logout-container">
+        <button onClick={handleLogout} className="logout-button" title="Cerrar sesión">
+          Cerrar Sesión
+        </button>
+      </div>
+
       {/* Sección izquierda para video o iframe */}
       <div className="video-container">
         <iframe
@@ -58,7 +78,6 @@ const PantallaPedidos = () => {
             }`}
           >
             <h3>Pedido #{pedido.numeroPedido}</h3>
-            
             <h4>{pedido.modoEntrega}</h4>
           </div>
         ))}

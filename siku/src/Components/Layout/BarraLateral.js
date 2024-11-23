@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faHome, faUtensils, faMoneyBillAlt, faClipboardList, faCog, faPlusCircle, faSignOutAlt, faChevronDown,
-  faHamburger, faPizzaSlice
-} from '@fortawesome/free-solid-svg-icons';
+import { faHome, faUtensils, faMoneyBillAlt, faClipboardList, faCog, faPlusCircle, faSignOutAlt, faChevronDown,  faHamburger, faPizzaSlice} from '@fortawesome/free-solid-svg-icons';
 import { getAuth, signOut } from 'firebase/auth';
 import { database } from '../../firebase';
 import { ref, onValue } from 'firebase/database';
@@ -51,7 +48,8 @@ const BarraLateral = () => {
   if (userRole === 'Presentacion') {
     return (
       <div className="presentacion-header">
-        <button onClick={handleLogout} className="logout-button">
+        {/* Botón para cerrar sesión */}
+        <button onClick={handleLogout} className="logout-button" title="Cerrar sesión">
           <FontAwesomeIcon icon={faSignOutAlt} />
         </button>
       </div>
