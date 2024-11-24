@@ -27,4 +27,55 @@
   .tabla-ventas tr:hover {
     background-color: #ddd;
   }
+  .fecha-selector {
+    margin-bottom: 20px;
+    text-align: center;
+  }
   
+  .fecha-selector label {
+    font-weight: bold;
+    margin-right: 10px;
+  }
+  
+  .fecha-selector select {
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+
+  .botonera-exportar {
+    margin: 20px 0;
+    text-align: center;
+  }
+  
+  .icon-button {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    margin: 0 10px;
+  }
+  
+  .icon-button:hover {
+    color: #ff4500;
+  }
+  .icon-excel {
+    color: green;
+  }
+  
+  .icon-pdf {
+    color: red;
+  }
+  
+  .icon-button {
+    font-size: 1.5em;
+    margin: 0 10px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    outline: none;
+  }
+  
+  .icon-button:hover {
+    transform: scale(1.1);
+  }
