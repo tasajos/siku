@@ -7,6 +7,7 @@ import './PantallaPedidos.css';
 const PantallaPedidos = () => {
   const [pedidos, setPedidos] = useState([]);
   const [hoy, setHoy] = useState('');
+  const [direccionVideo, setDireccionVideo] = useState('');
 
   useEffect(() => {
     // Obtener la fecha de hoy en formato "DD/MM/YYYY"
@@ -16,11 +17,11 @@ const PantallaPedidos = () => {
     const año = fechaActual.getFullYear();
     setHoy(`${dia}/${mes}/${año}`);
 
+    // Obtener pedidos entregados
     const pedidoRef = ref(database, 'pedidos');
     onValue(pedidoRef, (snapshot) => {
       const data = snapshot.val();
       if (data) {
-        // Filtrar los pedidos entregados de hoy
         const pedidosEntregados = Object.values(data)
           .filter(
             (pedido) =>
@@ -30,13 +31,22 @@ const PantallaPedidos = () => {
         setPedidos(pedidosEntregados);
       }
     });
+
+    // Obtener dirección del video
+    const configRef = ref(database, 'config/pantallaPresentacion');
+    onValue(configRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data && data.direccionVideo) {
+        setDireccionVideo(data.direccionVideo);
+      }
+    });
   }, []);
 
   const handleLogout = () => {
     const auth = getAuth();
     signOut(auth)
       .then(() => {
-        window.location.href = '/login'; // Redirigir a la página de inicio de sesión
+        window.location.href = '/login';
       })
       .catch((error) => {
         console.error('Error al cerrar sesión:', error);
@@ -52,19 +62,22 @@ const PantallaPedidos = () => {
         </button>
       </div>
 
-      {/* Sección izquierda para video o iframe */}
+      {/* Sección izquierda para video */}
       <div className="video-container">
-        <iframe
-          width="100%"
-          height="100%"
-          src="https://www.youtube.com/embed/cb63BReoXIo?si=9QpzJuDKfG0M5N4u"
-          title="YouTube video player"
-          frameBorder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          referrerPolicy="strict-origin-when-cross-origin"
-          allowFullScreen
-          className="video-iframe"
-        ></iframe>
+        {direccionVideo ? (
+          <iframe
+            width="100%"
+            height="100%"
+            src={direccionVideo}
+            title="Video"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen
+            className="video-iframe"
+          ></iframe>
+        ) : (
+          <p>Cargando video...</p>
+        )}
       </div>
 
       {/* Sección derecha para pedidos */}
@@ -73,9 +86,7 @@ const PantallaPedidos = () => {
         {pedidos.map((pedido, index) => (
           <div
             key={index}
-            className={`pedido-item ${
-              index === pedidos.length - 1 ? 'ultimo-pedido' : ''
-            }`}
+            className={`pedido-item ${index === pedidos.length - 1 ? 'ultimo-pedido' : ''}`}
           >
             <h3>Pedido #{pedido.numeroPedido}</h3>
             <h4>{pedido.modoEntrega}</h4>

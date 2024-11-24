@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUsers, faCashRegister, faUserFriends } from '@fortawesome/free-solid-svg-icons';
+import { faUsers, faCashRegister, faUserFriends,faTv  } from '@fortawesome/free-solid-svg-icons';
 import './Configuracion.css';
 
 const Configuracion = () => {
@@ -38,6 +38,17 @@ const Configuracion = () => {
             <button className="config-button">Acceder</button>
           </Link>
         </div>
+ {/* Nueva tarjeta para configurar la pantalla de presentación */}
+ <div className="config-card">
+          <FontAwesomeIcon icon={faTv} className="config-icon" />
+          <br />
+          <h3>Configurar Pantalla de Presentación</h3>
+          <p>Personaliza el contenido de la pantalla de presentación.</p>
+          <Link to="/config-presentacion">
+            <button className="config-button">Acceder</button>
+          </Link>
+        </div>
+
       </div>
     </div>
   );

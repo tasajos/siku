@@ -37,7 +37,7 @@ import ListaMenu from './Components/Menu/ListarMenu';
 
 // Pantalla Pedidos
 import PantallaPedidos from './Components/Paginas/PantallaPedidos';
-
+import AdmPantalla from './Components/Configuracion/AdmPresentacion/AdmPresentacion';
 
 
 import './App.css';
@@ -122,6 +122,7 @@ if (currentUser) {
               <Route path="/listacierrecajas" element={<ListaCierreCajas />} />
               <Route path="/pantpedidos" element={<PantallaPedidos />} />
               <Route path="/adm-caja" element={<Admccajas />} />
+              <Route path="/config-presentacion" element={<AdmPantalla />} />
               <Route path="/login" element={<Navigate to="/" />} /> {/* Redirigir si ya está autenticado */}
               <Route path="*" element={<Navigate to="/menu" />} /> {/* Redirigir a menú por defecto */}
             </Routes>
