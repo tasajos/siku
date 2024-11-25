@@ -1,0 +1,44 @@
+.reporte-ventas-container {
+    padding: 20px;
+    background-color: #f9f9f9;
+  }
+  
+  .fecha-selector {
+    margin-bottom: 20px;
+  }
+  
+  .fecha-selector label {
+    font-weight: bold;
+    margin-right: 10px;
+  }
+  
+  .ventas-info,
+  .productos-vendidos,
+  .caja-info {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+  }
+  
+  .ventas-info h3,
+  .productos-vendidos h3,
+  .caja-info h3 {
+    margin-bottom: 10px;
+  }
+  
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  li {
+    margin: 5px 0;
+  }
+  
+  .caja-info p {
+    margin: 5px 0;
+    font-size: 14px;
+  }
+  

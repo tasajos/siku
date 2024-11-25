@@ -174,7 +174,7 @@ const BarraLateral = () => {
             {reportesSubmenuVisible && (
               <ul className="submenu">
                 <li>
-                  <Link to="/reporte-ventas" className="submenu-link">
+                  <Link to="/rep_ventas" className="submenu-link">
                     <FaChartLine className="mr-2" />
                     Reporte de Ventas
                   </Link>

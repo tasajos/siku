@@ -40,6 +40,11 @@ import PantallaPedidos from './Components/Paginas/PantallaPedidos';
 import AdmPantalla from './Components/Configuracion/AdmPresentacion/AdmPresentacion';
 
 
+// Reportes
+import ReporVentas from './Components/Reporte/ReporteVentas';
+
+
+
 import './App.css';
 
 function App() {
@@ -123,6 +128,7 @@ if (currentUser) {
               <Route path="/pantpedidos" element={<PantallaPedidos />} />
               <Route path="/adm-caja" element={<Admccajas />} />
               <Route path="/config-presentacion" element={<AdmPantalla />} />
+              <Route path="/rep_ventas" element={<ReporVentas />} />
               <Route path="/login" element={<Navigate to="/" />} /> {/* Redirigir si ya está autenticado */}
               <Route path="*" element={<Navigate to="/menu" />} /> {/* Redirigir a menú por defecto */}
             </Routes>
